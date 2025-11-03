@@ -5,375 +5,344 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cakranesia - Jelajahi Cita Rasa Nusantara</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #FF6B6B;
-            --secondary: #4ECDC4;
-            --accent: #FFE66D;
-            --dark: #0A0E27;
-            --darker: #050816;
-            --light: #F7F7F7;
-        }
-
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--darker);
-            color: var(--light);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
             overflow-x: hidden;
-            cursor: none;
+            background: #0a0a0a;
         }
 
-        .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transition: all 0.1s ease;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--secondary);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            opacity: 0.5;
-        }
-
-        .navbar {
+        nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 30px 60px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            background: rgba(10, 14, 39, 0.8);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
         }
 
-        .navbar.scrolled {
-            padding: 20px 60px;
-            background: rgba(10, 14, 39, 0.95);
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
         }
 
         .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -1px;
         }
 
         .nav-links {
             display: flex;
-            gap: 40px;
+            gap: 2rem;
+            list-style: none;
             align-items: center;
         }
 
         .nav-links a {
-            color: var(--light);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
             position: relative;
-            transition: color 0.3s ease;
+            padding: 0.5rem 0;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-links a:hover {
+            color: #FFD700;
         }
 
         .search-btn {
-            background: linear-gradient(135deg, var(--primary), #FF8E53);
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             border: none;
-            padding: 12px 28px;
+            padding: 0.7rem 1.5rem;
             border-radius: 30px;
-            color: white;
-            font-weight: 600;
+            color: #0a0a0a;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .search-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
         }
 
         .hero {
-            height: 100vh;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            padding: 2rem;
         }
 
-        .hero-bg {
+        .hero::before {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(78, 205, 196, 0.15) 0%, transparent 50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(255, 165, 0, 0.1) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
         }
 
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            top: 60%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
-        .shape:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-            border-radius: 50%;
-            bottom: 10%;
-            left: 50%;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, 50px) rotate(90deg); }
-            50% { transform: translate(0, 100px) rotate(180deg); }
-            75% { transform: translate(-50px, 50px) rotate(270deg); }
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
         }
 
         .hero-content {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            z-index: 10;
-            max-width: 1000px;
-            padding: 0 20px;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.6rem 1.3rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50px;
+            color: #FFD700;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0);
+            }
         }
 
         .hero h1 {
-            font-size: 6rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 1s ease;
-            line-height: 1.2;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
         }
 
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            animation: fadeInUp 1s ease 0.2s both;
+        @keyframes shimmer {
+            to { background-position: 200% center; }
         }
 
-        .hero .description {
-            font-size: 1.2rem;
-            color: rgba(247, 247, 247, 0.7);
-            margin-bottom: 40px;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.8;
         }
 
         .cta-buttons {
             display: flex;
-            gap: 20px;
+            gap: 1rem;
             justify-content: center;
-            animation: fadeInUp 1s ease 0.6s both;
+            flex-wrap: wrap;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #FF8E53);
+        .cta-button {
+            display: inline-block;
+            padding: 1.1rem 2.5rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4);
+            cursor: pointer;
             border: none;
-            padding: 18px 40px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.6);
         }
 
-        .btn-primary:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-secondary {
+        .cta-button.secondary {
             background: transparent;
-            border: 2px solid var(--secondary);
-            padding: 16px 40px;
-            border-radius: 50px;
-            color: var(--secondary);
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            color: #FFD700;
         }
 
-        .btn-secondary:hover {
-            background: var(--secondary);
-            color: var(--dark);
-            transform: translateY(-2px);
+        .cta-button.secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
         }
 
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            padding: 80px 60px;
+            gap: 2rem;
+            padding: 4rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .stat-card {
             text-align: center;
-            padding: 30px;
+            padding: 2rem;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s;
         }
 
         .stat-card:hover {
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-5px);
-            border-color: var(--primary);
+            border-color: #FFD700;
         }
 
         .stat-number {
-            font-size: 3rem;
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .stat-label {
-            font-size: 1.1rem;
-            color: rgba(247, 247, 247, 0.7);
-            margin-top: 10px;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
         }
 
         .section {
-            padding: 120px 60px;
+            padding: 6rem 2rem;
             max-width: 1600px;
             margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            color: #FFD700;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
         }
 
         .section-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
         }
 
         .section-description {
-            font-size: 1.3rem;
-            color: rgba(247, 247, 247, 0.6);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.6);
             max-width: 700px;
             margin: 0 auto;
         }
 
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            border-color: #FFD700;
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-color: transparent;
+            color: #0a0a0a;
+        }
+
         .provinces-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 2rem;
         }
 
         .province-card {
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.05) 0%, rgba(78, 205, 196, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 165, 0, 0.05) 100%);
             border-radius: 25px;
-            padding: 40px;
+            padding: 2.5rem;
             cursor: pointer;
-            transition: all 0.4s ease;
-            border: 2px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s;
+            border: 2px solid rgba(255, 215, 0, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -381,64 +350,59 @@
         .province-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
             opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .province-card:hover::before {
-            opacity: 1;
-            animation: rotate 8s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            transition: opacity 0.4s;
         }
 
         .province-card:hover {
             transform: translateY(-10px) scale(1.02);
-            border-color: var(--primary);
-            box-shadow: 0 20px 60px rgba(255, 107, 107, 0.3);
+            border-color: #FFD700;
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+        }
+
+        .province-card:hover::before {
+            opacity: 1;
         }
 
         .province-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: clamp(3rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
             display: block;
         }
 
         .province-name {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
             font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary);
+            margin-bottom: 1rem;
+            color: #FFD700;
         }
 
         .province-desc {
-            color: rgba(247, 247, 247, 0.7);
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.8;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
         }
 
         .province-count {
             display: inline-block;
-            background: rgba(255, 107, 107, 0.2);
-            color: var(--primary);
-            padding: 8px 20px;
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            padding: 0.5rem 1.2rem;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .culinary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+            gap: 2rem;
         }
 
         .culinary-card {
@@ -446,59 +410,41 @@
             border-radius: 25px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s ease;
-            border: 2px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-
-        .culinary-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .culinary-card:hover::after {
-            opacity: 1;
+            transition: all 0.4s;
+            border: 2px solid rgba(255, 215, 0, 0.2);
         }
 
         .culinary-card:hover {
-            transform: scale(1.03);
-            border-color: var(--secondary);
-            box-shadow: 0 20px 60px rgba(78, 205, 196, 0.3);
+            transform: translateY(-10px);
+            border-color: #FFD700;
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
         }
 
         .culinary-thumbnail {
             width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 250px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
+            font-size: clamp(5rem, 8vw, 8rem);
             position: relative;
-            overflow: hidden;
         }
 
         .play-overlay {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: var(--dark);
+            font-size: 1.5rem;
+            color: #0a0a0a;
             opacity: 0;
             transform: scale(0.5);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .culinary-card:hover .play-overlay {
@@ -507,88 +453,81 @@
         }
 
         .culinary-content {
-            padding: 35px;
-            position: relative;
-            z-index: 1;
+            padding: 2rem;
         }
 
         .culinary-name {
-            font-size: 2rem;
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
             font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--light);
+            margin-bottom: 1rem;
+            color: white;
         }
 
         .culinary-tags {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
         }
 
         .tag {
-            background: rgba(255, 107, 107, 0.2);
-            color: var(--primary);
-            padding: 6px 16px;
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            padding: 0.4rem 1rem;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
-        .tag.secondary {
-            background: rgba(78, 205, 196, 0.2);
-            color: var(--secondary);
-        }
-
         .culinary-desc {
-            color: rgba(247, 247, 247, 0.7);
-            line-height: 1.9;
-            margin-bottom: 25px;
-            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
         }
 
         .watch-tutorial {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--primary), #FF8E53);
-            color: white;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #0a0a0a;
             border: none;
-            padding: 14px 28px;
+            padding: 0.9rem 1.5rem;
             border-radius: 30px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            width: 100%;
+            justify-content: center;
         }
 
         .watch-tutorial:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
         }
 
-        .filter-section {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 60px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            padding: 12px 28px;
+        .back-btn {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            padding: 0.9rem 1.8rem;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: transparent;
-            transform: translateY(-2px);
+        .back-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+            transform: translateX(-5px);
         }
 
         .modal {
@@ -598,12 +537,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 14, 39, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 1rem;
+            overflow-y: auto;
         }
 
         .modal.active {
@@ -611,15 +551,15 @@
         }
 
         .modal-content {
-            background: var(--dark);
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(10, 10, 10, 0.95));
             border-radius: 30px;
-            max-width: 1000px;
+            max-width: 900px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            padding: 50px;
+            padding: 2.5rem;
             position: relative;
-            border: 2px solid rgba(255, 107, 107, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
             animation: modalSlideIn 0.5s ease;
         }
 
@@ -636,67 +576,76 @@
 
         .close-modal {
             position: absolute;
-            top: 25px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: rgba(255, 107, 107, 0.2);
+            background: rgba(255, 215, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--primary);
-            transition: all 0.3s ease;
+            color: #FFD700;
+            transition: all 0.3s;
+            border: none;
         }
 
         .close-modal:hover {
-            background: var(--primary);
-            color: white;
+            background: #FFD700;
+            color: #0a0a0a;
             transform: rotate(90deg);
         }
 
         .modal-video {
-            background: #000;
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
-            margin-bottom: 40px;
+            margin: 2rem 0;
             aspect-ratio: 16/9;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
+            font-size: clamp(5rem, 10vw, 8rem);
             position: relative;
-            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .modal h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: white;
+            margin-bottom: 1rem;
         }
 
         .recipe-section {
-            margin-top: 40px;
+            margin-top: 2rem;
         }
 
         .recipe-section h3 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 25px;
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            color: #FFD700;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.8rem;
         }
 
         .ingredients-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+            gap: 0.8rem;
+            margin-bottom: 2rem;
         }
 
         .ingredient-item {
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px 20px;
-            border-radius: 15px;
-            border-left: 3px solid var(--secondary);
-            color: rgba(247, 247, 247, 0.8);
-            transition: all 0.3s ease;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            border-left: 3px solid #FFD700;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
         }
 
         .ingredient-item:hover {
@@ -711,11 +660,12 @@
 
         .step-item {
             counter-increment: step-counter;
-            margin-bottom: 25px;
-            padding-left: 60px;
+            margin-bottom: 1.5rem;
+            padding-left: 3.5rem;
             position: relative;
-            color: rgba(247, 247, 247, 0.8);
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.8;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
         }
 
         .step-item::before {
@@ -723,15 +673,15 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            color: white;
+            color: #0a0a0a;
         }
 
         .search-modal {
@@ -741,11 +691,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 14, 39, 0.98);
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
             z-index: 3000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 1rem;
         }
 
         .search-modal.active {
@@ -759,128 +710,211 @@
 
         .search-input {
             width: 100%;
-            padding: 25px 30px;
-            font-size: 2rem;
+            padding: 1.5rem 2rem;
+            font-size: clamp(1.3rem, 3vw, 2rem);
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 107, 107, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 20px;
-            color: var(--light);
-            font-family: 'Space Grotesk', sans-serif;
+            color: white;
+            font-family: 'Inter', sans-serif;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 40px rgba(255, 107, 107, 0.3);
+            border-color: #FFD700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         .search-results {
-            margin-top: 30px;
+            margin-top: 2rem;
             max-height: 400px;
             overflow-y: auto;
         }
 
         .search-result-item {
             background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
+            padding: 1.5rem;
             border-radius: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .search-result-item:hover {
             background: rgba(255, 255, 255, 0.08);
             transform: translateX(10px);
+            border-color: #FFD700;
         }
 
-        .back-btn {
-            background: rgba(78, 205, 196, 0.2);
-            color: var(--secondary);
-            border: 2px solid var(--secondary);
-            padding: 14px 32px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        .search-close-btn {
+            text-align: center;
+            margin-top: 2rem;
         }
 
-        .back-btn:hover {
-            background: var(--secondary);
-            color: var(--dark);
-            transform: translateX(-5px);
-        }
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-container {
+                padding: 1rem;
+            }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .section {
-                padding: 80px 30px;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-            }
-            
-            .navbar {
-                padding: 20px 30px;
-            }
-            
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.98);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem;
+                border-top: 1px solid rgba(255, 215, 0, 0.2);
             }
-            
-            .culinary-grid, .provinces-grid {
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero {
+                min-height: calc(100vh - 70px);
+                margin-top: 70px;
+            }
+
+            .provinces-grid,
+            .culinary-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .step-item {
+                padding-left: 3rem;
+            }
+
+            .step-item::before {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .hero {
+                margin-top: 65px;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                padding: 2rem 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .culinary-thumbnail {
+                height: 200px;
+            }
+
+            .culinary-content {
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem 1rem;
+                max-height: 85vh;
+            }
+
+            .ingredients-grid {
                 grid-template-columns: 1fr;
             }
 
-            .custom-cursor, .cursor-follower {
-                display: none;
+            .close-modal {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
             }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
-    <div class="cursor-follower"></div>
-
-    <nav class="navbar">
-        <div class="logo">CAKRANESIA</div>
-        <div class="nav-links">
-            <a href="#home">Beranda</a>
-            <a href="#provinces">Provinsi</a>
-            <a href="#about">Tentang</a>
-            <a href="#contact">Kontak</a>
-            <button class="search-btn" onclick="openSearch()">🔍 Cari</button>
+    <nav>
+        <div class="nav-container">
+            <div class="logo-container">
+                <div class="logo">CAKRANESIA KULINER</div>
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#provinces">Provinsi</a></li>
+                <li><a href="index.html">Kembali ke Home</a></li>
+                <li><button class="search-btn" onclick="openSearch()">🔍 Cari</button></li>
+            </ul>
         </div>
     </nav>
 
     <section class="hero" id="home">
-        <div class="hero-bg"></div>
-        <div class="floating-shapes">
-            <div class="shape"></div>
-            <div class="shape"></div>
-            <div class="shape"></div>
-        </div>
         <div class="hero-content">
-            <div class="subtitle">Pelestarian & Konservasi Kebudayaan</div>
-            <h1>CAKRANESIA</h1>
-            <p class="description">Jelajahi kekayaan kuliner tradisional Indonesia dari 38 provinsi melalui platform digital interaktif. Preservasi warisan budaya melalui teknologi.</p>
+            <div class="hero-badge">Kuliner Nusantara</div>
+            <h1><span class="gradient-text">Jelajahi Cita Rasa</span><br>Nusantara</h1>
+            <p>Temukan kekayaan kuliner tradisional Indonesia dari 38 provinsi melalui platform digital interaktif. Preservasi warisan budaya melalui teknologi.</p>
             <div class="cta-buttons">
-                <button class="btn-primary" onclick="scrollToSection('provinces')">Mulai Jelajah</button>
-                <button class="btn-secondary" onclick="openSearch()">Cari Kuliner</button>
+                <button class="cta-button" onclick="scrollToSection('provinces')">Mulai Jelajah</button>
+                <button class="cta-button secondary" onclick="openSearch()">🔍 Cari Kuliner</button>
             </div>
         </div>
     </section>
@@ -896,7 +930,7 @@
         </div>
         <div class="stat-card">
             <div class="stat-number">150+</div>
-            <div class="stat-label">Video Tutorial</div>
+            <div class="stat-label">Resep Lengkap</div>
         </div>
         <div class="stat-card">
             <div class="stat-number">50K+</div>
@@ -906,6 +940,7 @@
 
     <section class="section" id="provinces">
         <div class="section-header">
+            <div class="section-label">Eksplorasi</div>
             <h2 class="section-title">Jelajahi Provinsi</h2>
             <p class="section-description">Temukan kekayaan kuliner dari setiap provinsi di Indonesia. Setiap daerah memiliki warisan rasa yang unik dan berharga.</p>
         </div>
@@ -933,8 +968,8 @@
 
     <div class="modal" id="videoModal">
         <div class="modal-content">
-            <div class="close-modal" onclick="closeModal()">×</div>
-            <h2 id="modalTitle" style="font-size: 2.5rem; margin-bottom: 30px; color: var(--light);"></h2>
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <h2 id="modalTitle"></h2>
             <div class="modal-video" id="videoPlayer"></div>
             <div class="recipe-section">
                 <h3>🥘 Bahan-bahan</h3>
@@ -949,52 +984,19 @@
 
     <div class="search-modal" id="searchModal">
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Cari kuliner tradisional..." id="searchInput" oninput="searchCulinary()" autofocus>
+            <input type="text" class="search-input" placeholder="Cari kuliner tradisional..." id="searchInput" oninput="searchCulinary()">
             <div class="search-results" id="searchResults"></div>
-            <div style="text-align: center; margin-top: 30px;">
-                <button class="btn-secondary" onclick="closeSearch()">Tutup</button>
+            <div class="search-close-btn">
+                <button class="cta-button secondary" onclick="closeSearch()">Tutup</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.custom-cursor');
-        const follower = document.querySelector('.cursor-follower');
-        
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = mouseX + 'px';
-            cursor.style.top = mouseY + 'px';
-        });
-        
-        function animateFollower() {
-            const distX = mouseX - followerX;
-            const distY = mouseY - followerY;
-            
-            followerX += distX * 0.1;
-            followerY += distY * 0.1;
-            
-            follower.style.left = followerX + 'px';
-            follower.style.top = followerY + 'px';
-            
-            requestAnimationFrame(animateFollower);
+        // Toggle menu
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
         }
-        animateFollower();
-
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
 
         // Data Kuliner
         const culinaryData = {
@@ -1007,25 +1009,25 @@
                         name: 'Nasi Timbel',
                         emoji: '🍚',
                         category: 'Makanan Utama',
-                        desc: 'Nasi yang dibungkus daun pisang, disajikan dengan lauk pauk khas Sunda seperti ayam goreng, ikan asin, tempe, tahu, dan sambal terasi. Mencerminkan kesederhanaan hidup masyarakat Sunda yang dekat dengan alam.',
-                        ingredients: ['Beras 500g', 'Daun pisang segar', 'Ayam kampung 1 ekor', 'Tempe 200g', 'Tahu 200g', 'Ikan asin 100g', 'Sambal terasi pedas', 'Lalapan (timun, kol, kemangi)', 'Daun singkong rebus'],
-                        steps: ['Masak nasi dengan air secukupnya hingga pulen', 'Layukan daun pisang di atas api agar lentur', 'Ambil nasi panas dan bungkus dengan daun pisang', 'Goreng ayam dengan bumbu kuning khas Sunda', 'Goreng tempe dan tahu hingga garing', 'Buat sambal terasi dengan cabai rawit', 'Susun nasi timbel dengan semua lauk di atas daun pisang', 'Sajikan dengan lalapan segar']
+                        desc: 'Nasi yang dibungkus daun pisang, disajikan dengan lauk pauk khas Sunda seperti ayam goreng, ikan asin, tempe, tahu, dan sambal terasi.',
+                        ingredients: ['Beras 500g', 'Daun pisang segar', 'Ayam kampung 1 ekor', 'Tempe 200g', 'Tahu 200g', 'Ikan asin 100g', 'Sambal terasi pedas', 'Lalapan (timun, kol, kemangi)'],
+                        steps: ['Masak nasi dengan air secukupnya hingga pulen', 'Layukan daun pisang di atas api agar lentur', 'Ambil nasi panas dan bungkus dengan daun pisang', 'Goreng ayam dengan bumbu kuning khas Sunda', 'Goreng tempe dan tahu hingga garing', 'Buat sambal terasi dengan cabai rawit', 'Susun nasi timbel dengan semua lauk', 'Sajikan dengan lalapan segar']
                     },
                     {
                         name: 'Karedok',
                         emoji: '🥗',
                         category: 'Salad',
-                        desc: 'Salad sayuran mentah khas Sunda dengan bumbu kacang yang gurih dan segar. Filosofi "raw" mencerminkan kehidupan alami dan kesegaran yang dijunjung masyarakat Sunda.',
-                        ingredients: ['Kacang panjang 100g', 'Tauge 100g', 'Kol 100g', 'Mentimun 1 buah', 'Kacang tanah goreng 200g', 'Cabai rawit 5 buah', 'Kencur 2 cm', 'Gula merah 50g', 'Air asam jawa', 'Terasi bakar', 'Garam secukupnya'],
-                        steps: ['Potong kacang panjang 3 cm', 'Cuci bersih tauge dan tiriskan', 'Iris tipis kol dan mentimun', 'Sangrai kacang tanah hingga matang', 'Haluskan kacang dengan cabai, kencur, terasi', 'Tambahkan gula merah dan air asam jawa', 'Campur sayuran dengan bumbu kacang', 'Aduk rata dan sajikan segera']
+                        desc: 'Salad sayuran mentah khas Sunda dengan bumbu kacang yang gurih dan segar.',
+                        ingredients: ['Kacang panjang 100g', 'Tauge 100g', 'Kol 100g', 'Mentimun 1 buah', 'Kacang tanah goreng 200g', 'Cabai rawit 5 buah', 'Kencur 2 cm', 'Gula merah 50g'],
+                        steps: ['Potong kacang panjang 3 cm', 'Cuci bersih tauge dan tiriskan', 'Iris tipis kol dan mentimun', 'Sangrai kacang tanah hingga matang', 'Haluskan kacang dengan cabai, kencur', 'Tambahkan gula merah dan air asam jawa', 'Campur sayuran dengan bumbu kacang', 'Aduk rata dan sajikan segera']
                     },
                     {
                         name: 'Soto Bandung',
                         emoji: '🍜',
                         category: 'Soto',
-                        desc: 'Soto berkuah bening dengan isi lobak, daging sapi, dan kacang kedelai goreng. Kuah yang jernih mencerminkan kejujuran masyarakat Sunda.',
-                        ingredients: ['Daging sapi 500g', 'Lobak 300g', 'Kedelai goreng 100g', 'Seledri dan daun bawang', 'Bawang merah goreng', 'Jeruk nipis', 'Kecap manis', 'Bumbu halus (bawang putih, merica, ketumbar)', 'Garam dan kaldu sapi'],
-                        steps: ['Rebus daging sapi hingga empuk', 'Potong dadu lobak dan rebus dalam kaldu', 'Tumis bumbu halus hingga harum', 'Masukkan bumbu ke kuah kaldu', 'Goreng kedelai hingga renyah', 'Siapkan mangkuk saji', 'Masukkan daging, lobak, kedelai', 'Siram dengan kuah panas', 'Taburi bawang goreng dan seledri', 'Sajikan dengan jeruk nipis dan kecap']
+                        desc: 'Soto berkuah bening dengan isi lobak, daging sapi, dan kacang kedelai goreng.',
+                        ingredients: ['Daging sapi 500g', 'Lobak 300g', 'Kedelai goreng 100g', 'Seledri dan daun bawang', 'Bawang merah goreng', 'Jeruk nipis', 'Kecap manis'],
+                        steps: ['Rebus daging sapi hingga empuk', 'Potong dadu lobak dan rebus dalam kaldu', 'Tumis bumbu halus hingga harum', 'Masukkan bumbu ke kuah kaldu', 'Goreng kedelai hingga renyah', 'Susun daging, lobak, kedelai', 'Siram dengan kuah panas', 'Taburi bawang goreng dan seledri']
                     }
                 ]
             },
@@ -1038,25 +1040,17 @@
                         name: 'Gudeg',
                         emoji: '🥘',
                         category: 'Makanan Utama',
-                        desc: 'Masakan manis dari nangka muda yang dimasak dengan santan dan gula merah, simbol kesabaran dalam filosofi Jawa karena membutuhkan waktu lama untuk memasaknya.',
-                        ingredients: ['Nangka muda 1kg', 'Santan kental 500ml', 'Gula merah 200g', 'Daun salam 3 lembar', 'Lengkuas 3 cm', 'Telur rebus 4 butir', 'Ayam kampung 500g', 'Bawang merah 8 siung', 'Bawang putih 4 siung', 'Ketumbar 1 sdm', 'Kemiri 5 butir'],
-                        steps: ['Potong nangka muda ukuran sedang', 'Haluskan bawang merah, bawang putih, ketumbar, kemiri', 'Tumis bumbu halus hingga harum', 'Masukkan nangka, santan, dan bumbu', 'Tambahkan daun salam dan lengkuas', 'Masak dengan api kecil selama 5-6 jam', 'Aduk sesekali agar tidak gosong', 'Tambahkan gula merah', 'Masak hingga bumbu meresap dan berwarna coklat tua', 'Sajikan dengan telur, ayam, dan sambal krecek']
+                        desc: 'Masakan manis dari nangka muda yang dimasak dengan santan dan gula merah, simbol kesabaran dalam filosofi Jawa.',
+                        ingredients: ['Nangka muda 1kg', 'Santan kental 500ml', 'Gula merah 200g', 'Daun salam 3 lembar', 'Lengkuas 3 cm', 'Telur rebus 4 butir', 'Ayam kampung 500g'],
+                        steps: ['Potong nangka muda ukuran sedang', 'Haluskan bumbu (bawang merah, bawang putih, ketumbar)', 'Tumis bumbu halus hingga harum', 'Masukkan nangka, santan, dan bumbu', 'Masak dengan api kecil selama 5-6 jam', 'Aduk sesekali agar tidak gosong', 'Tambahkan gula merah', 'Sajikan dengan telur dan ayam']
                     },
                     {
                         name: 'Soto Kudus',
                         emoji: '🍲',
                         category: 'Soto',
-                        desc: 'Soto khas Kudus dengan kuah bening yang gurih, berisi daging kerbau dan koya (kerupuk yang ditumbuk dengan bawang putih). Menunjukkan akulturasi budaya Jawa dan Islam.',
-                        ingredients: ['Daging kerbau 500g', 'Koya (kerupuk + bawang putih)', 'Bihun 200g', 'Tauge 100g', 'Seledri segar', 'Daun bawang', 'Jeruk nipis', 'Kecap manis', 'Bawang merah 6 siung', 'Bawang putih 4 siung', 'Merica 1 sdt', 'Ketumbar 1 sdm'],
-                        steps: ['Rebus daging kerbau hingga empuk', 'Haluskan bumbu (bawang merah, bawang putih, merica, ketumbar)', 'Tumis bumbu halus hingga harum', 'Masukkan bumbu ke kuah kaldu', 'Didihkan dan bumbui dengan garam', 'Rebus bihun hingga matang', 'Rebus tauge sebentar', 'Siapkan koya dalam mangkuk', 'Susun daging dan bihun', 'Siram dengan kuah panas', 'Taburi seledri dan daun bawang', 'Tambahkan kecap dan jeruk nipis']
-                    },
-                    {
-                        name: 'Lumpia Semarang',
-                        emoji: '🌯',
-                        category: 'Snack',
-                        desc: 'Lumpia basah atau goreng dengan isian rebung dan udang. Kuliner hasil akulturasi budaya Tionghoa dan Jawa yang harmonis.',
-                        ingredients: ['Kulit lumpia 20 lembar', 'Rebung 300g', 'Udang 200g', 'Telur 2 butir', 'Tahu 100g', 'Daun bawang', 'Bawang putih 3 siung', 'Saus untuk cocolan', 'Gula dan garam', 'Merica bubuk'],
-                        steps: ['Rebus rebung hingga empuk', 'Iris tipis rebung dan tahu', 'Tumis bawang putih hingga harum', 'Masukkan udang, rebung, tahu', 'Bumbui dengan garam, gula, merica', 'Tambahkan daun bawang', 'Buat dadar telur tipis', 'Ambil kulit lumpia, isi dengan tumisan', 'Gulung dengan rapat', 'Goreng atau sajikan basah', 'Hidangkan dengan saus cocol']
+                        desc: 'Soto khas Kudus dengan kuah bening yang gurih, berisi daging kerbau dan koya.',
+                        ingredients: ['Daging kerbau 500g', 'Koya (kerupuk + bawang putih)', 'Bihun 200g', 'Tauge 100g', 'Seledri segar', 'Daun bawang', 'Jeruk nipis'],
+                        steps: ['Rebus daging kerbau hingga empuk', 'Haluskan bumbu dan tumis', 'Masukkan bumbu ke kuah kaldu', 'Rebus bihun hingga matang', 'Siapkan koya dalam mangkuk', 'Susun daging dan bihun', 'Siram dengan kuah panas', 'Tambahkan kecap dan jeruk nipis']
                     }
                 ]
             },
@@ -1069,56 +1063,17 @@
                         name: 'Rawon',
                         emoji: '🍲',
                         category: 'Soto',
-                        desc: 'Sup daging berkuah hitam khas Jawa Timur yang menggunakan kluwak sebagai bumbu utama. Warna hitam melambangkan kedalaman rasa dan filosofi kehidupan.',
-                        ingredients: ['Daging sapi 500g', 'Kluwak 5 butir', 'Lengkuas 3 cm', 'Serai 2 batang', 'Daun jeruk 3 lembar', 'Tauge 200g', 'Telur asin 2 butir', 'Bawang merah 8 siung', 'Bawang putih 5 siung', 'Kemiri 4 butir', 'Ketumbar 1 sdm', 'Cabai merah 3 buah'],
-                        steps: ['Rebus daging dengan bumbu rempah', 'Haluskan bawang merah, bawang putih, kemiri, ketumbar, cabai', 'Tumis bumbu halus hingga harum', 'Masukkan bumbu ke kuah kaldu', 'Tambahkan kluwak yang sudah dihaluskan', 'Masak hingga kuah berwarna hitam pekat', 'Tambahkan lengkuas, serai, daun jeruk', 'Bumbui dengan garam dan gula', 'Rebus tauge sebentar', 'Sajikan rawon dengan tauge, telur asin, dan sambal']
+                        desc: 'Sup daging berkuah hitam khas Jawa Timur yang menggunakan kluwak sebagai bumbu utama.',
+                        ingredients: ['Daging sapi 500g', 'Kluwak 5 butir', 'Lengkuas 3 cm', 'Serai 2 batang', 'Daun jeruk 3 lembar', 'Tauge 200g', 'Telur asin 2 butir'],
+                        steps: ['Rebus daging dengan bumbu rempah', 'Haluskan bumbu lengkap', 'Tumis bumbu hingga harum', 'Tambahkan kluwak yang sudah dihaluskan', 'Masak hingga kuah hitam pekat', 'Rebus tauge sebentar', 'Sajikan rawon dengan tauge dan telur asin']
                     },
                     {
                         name: 'Rujak Cingur',
                         emoji: '🥙',
                         category: 'Salad',
-                        desc: 'Rujak khas Surabaya dengan cingur (hidung sapi) dan bumbu petis yang kental. Mencerminkan keberanian kuliner dan keterbukaan masyarakat Arek terhadap berbagai bahan makanan.',
-                        ingredients: ['Cingur rebus 200g', 'Kangkung 1 ikat', 'Tauge 100g', 'Timun 1 buah', 'Kedondong 2 buah', 'Nanas 100g', 'Lontong 2 buah', 'Petis udang 3 sdm', 'Kacang tanah goreng 150g', 'Cabai rawit 10 buah', 'Gula merah 100g', 'Air asam jawa', 'Garam secukupnya'],
-                        steps: ['Rebus kangkung dan tauge sebentar', 'Potong cingur tipis-tipis', 'Iris timun, kedondong, nanas', 'Potong lontong kotak-kotak', 'Sangrai kacang tanah', 'Haluskan kacang dengan cabai', 'Tambahkan petis, gula merah, air asam', 'Campur semua bahan dengan bumbu', 'Aduk rata hingga bumbu merata', 'Sajikan dengan kerupuk']
-                    },
-                    {
-                        name: 'Sate Madura',
-                        emoji: '串',
-                        category: 'Sate',
-                        desc: 'Sate daging sapi atau ayam dengan bumbu kacang yang khas. Madura dikenal sebagai pulau sate dengan cita rasa yang otentik.',
-                        ingredients: ['Daging sapi/ayam 500g', 'Kecap manis 4 sdm', 'Bumbu kacang', 'Kacang tanah goreng 200g', 'Cabai rawit 5 buah', 'Bawang merah 3 siung', 'Gula merah 50g', 'Air asam jawa', 'Kecap manis', 'Tusuk sate'],
-                        steps: ['Potong daging kotak-kotak', 'Marinasi dengan kecap dan bumbu', 'Tusuk daging dengan tusuk sate', 'Bakar di atas arang', 'Olesi dengan kecap saat dibakar', 'Balik-balik hingga matang', 'Haluskan bumbu kacang', 'Sajikan sate dengan bumbu kacang', 'Tambahkan irisan cabai dan bawang', 'Siram dengan kecap manis']
-                    }
-                ]
-            },
-            'Sumatera Utara': {
-                island: 'sumatera',
-                icon: '⛰️',
-                desc: 'Rempah khas Batak dan Melayu Deli yang kaya dan berani',
-                foods: [
-                    {
-                        name: 'Saksang',
-                        emoji: '🍖',
-                        category: 'Makanan Utama',
-                        desc: 'Masakan daging babi khas Batak dengan bumbu andaliman yang khas. Hidangan wajib dalam pesta adat Batak yang menunjukkan kemewahan dan kegembiraan.',
-                        ingredients: ['Daging babi 1kg', 'Darah babi 200ml', 'Andaliman 2 sdm', 'Lengkuas 5 cm', 'Jahe 5 cm', 'Daun salam 5 lembar', 'Daun jeruk 3 lembar', 'Bawang merah 10 siung', 'Bawang putih 8 siung', 'Cabai merah 10 buah', 'Kunyit 3 cm', 'Asam kandis 3 buah'],
-                        steps: ['Potong daging babi ukuran sedang', 'Haluskan bawang merah, bawang putih, cabai, kunyit', 'Tumis bumbu halus hingga harum', 'Masukkan daging dan aduk rata', 'Tambahkan lengkuas, jahe, daun salam', 'Masak hingga daging empuk', 'Tambahkan andaliman dan asam kandis', 'Tuang darah babi sedikit demi sedikit', 'Masak hingga bumbu meresap sempurna', 'Sajikan hangat dengan nasi panas']
-                    },
-                    {
-                        name: 'Arsik',
-                        emoji: '🐟',
-                        category: 'Ikan',
-                        desc: 'Ikan mas yang dimasak dengan bumbu khas Batak Toba menggunakan andaliman dan asam kandis. Rasa asam, pedas, dan segar yang khas dari Danau Toba.',
-                        ingredients: ['Ikan mas 1 ekor besar', 'Andaliman 1 sdm', 'Asam kandis 3 buah', 'Daun kunyit 3 lembar', 'Cabai merah 10 buah', 'Bawang merah 10 siung', 'Bawang putih 5 siung', 'Jahe 3 cm', 'Kunyit 2 cm', 'Tomat 2 buah', 'Serai 2 batang', 'Garam secukupnya'],
-                        steps: ['Bersihkan ikan mas', 'Haluskan cabai, bawang merah, bawang putih, jahe, kunyit', 'Lumuri ikan dengan bumbu halus', 'Diamkan 30 menit', 'Panaskan sedikit minyak', 'Masak ikan dengan api sedang', 'Tambahkan daun kunyit, serai, tomat', 'Masukkan andaliman dan asam kandis', 'Masak hingga bumbu meresap', 'Angkat dan sajikan panas']
-                    },
-                    {
-                        name: 'Bika Ambon',
-                        emoji: '🍰',
-                        category: 'Kue',
-                        desc: 'Kue khas Medan dengan tekstur berpori-pori dan aroma pandan yang harum. Hasil akulturasi budaya Melayu dengan sentuhan modern.',
-                        ingredients: ['Telur 10 butir', 'Gula pasir 300g', 'Tepung tapioka 250g', 'Santan 400ml', 'Daun pandan', 'Ragi instan 1 sdm', 'Air hangat 100ml', 'Garam 1/2 sdt', 'Vanili bubuk'],
-                        steps: ['Larutkan ragi dalam air hangat', 'Kocok telur dan gula hingga mengembang', 'Masak santan dengan daun pandan', 'Campurkan tepung tapioka', 'Tambahkan santan perlahan', 'Masukkan larutan ragi', 'Diamkan adonan 2 jam', 'Panaskan cetakan khusus bika', 'Tuang adonan setengah cetakan', 'Panggang dengan api atas', 'Tunggu hingga berpori', 'Angkat dan dinginkan']
+                        desc: 'Rujak khas Surabaya dengan cingur (hidung sapi) dan bumbu petis yang kental.',
+                        ingredients: ['Cingur rebus 200g', 'Kangkung 1 ikat', 'Tauge 100g', 'Timun 1 buah', 'Kedondong 2 buah', 'Petis udang 3 sdm', 'Kacang tanah 150g'],
+                        steps: ['Rebus kangkung dan tauge', 'Potong cingur tipis-tipis', 'Iris semua buah dan sayur', 'Sangrai kacang tanah', 'Haluskan bumbu dengan petis', 'Campur semua bahan', 'Aduk rata hingga bumbu merata']
                     }
                 ]
             },
@@ -1131,25 +1086,17 @@
                         name: 'Rendang',
                         emoji: '🥩',
                         category: 'Makanan Utama',
-                        desc: 'Masakan daging yang dimasak dalam santan dan rempah-rempah hingga kering, dinobatkan sebagai makanan terenak di dunia oleh CNN. Simbol ketahanan dan kekuatan dalam budaya Minang.',
-                        ingredients: ['Daging sapi 1kg', 'Santan kental 1 liter', 'Cabai merah 15 buah', 'Bawang merah 10 siung', 'Bawang putih 6 siung', 'Lengkuas 5 cm', 'Jahe 3 cm', 'Serai 3 batang', 'Daun jeruk 5 lembar', 'Daun kunyit 2 lembar', 'Asam kandis 3 buah', 'Kelapa sangrai 100g'],
-                        steps: ['Potong daging sapi sesuai serat', 'Haluskan cabai, bawang merah, bawang putih, jahe', 'Sangrai kelapa hingga coklat, haluskan', 'Tumis bumbu halus hingga harum', 'Masukkan daging dan santan', 'Tambahkan lengkuas, serai, daun jeruk, daun kunyit', 'Masak dengan api kecil 4-5 jam', 'Aduk sesekali hingga santan mengering', 'Tambahkan kelapa sangrai', 'Masak hingga berwarna coklat kehitaman dan berminyak', 'Angkat dan sajikan dengan lemang atau nasi']
+                        desc: 'Masakan daging yang dimasak dalam santan dan rempah hingga kering, dinobatkan sebagai makanan terenak di dunia.',
+                        ingredients: ['Daging sapi 1kg', 'Santan kental 1 liter', 'Cabai merah 15 buah', 'Lengkuas 5 cm', 'Serai 3 batang', 'Daun jeruk 5 lembar', 'Kelapa sangrai 100g'],
+                        steps: ['Potong daging sapi sesuai serat', 'Haluskan semua bumbu', 'Sangrai kelapa hingga coklat', 'Tumis bumbu halus hingga harum', 'Masukkan daging dan santan', 'Masak dengan api kecil 4-5 jam', 'Aduk sesekali hingga mengering', 'Masak hingga berwarna coklat kehitaman']
                     },
                     {
                         name: 'Sate Padang',
                         emoji: '串',
                         category: 'Sate',
-                        desc: 'Sate daging sapi dengan kuah kental khas Minang yang gurih dan sedikit pedas. Kuah kuning yang kental menjadi ciri khasnya.',
-                        ingredients: ['Daging sapi 500g', 'Lidah sapi 200g', 'Tepung beras 3 sdm', 'Kunyit 3 cm', 'Jahe 2 cm', 'Lengkuas 2 cm', 'Serai 2 batang', 'Cabai merah 5 buah', 'Bawang merah 5 siung', 'Bawang putih 3 siung', 'Ketumbar 1 sdm', 'Garam dan kaldu'],
-                        steps: ['Rebus daging dan lidah hingga empuk', 'Potong dadu dan tusuk', 'Bakar sate hingga kecoklatan', 'Haluskan bumbu (kunyit, jahe, lengkuas, cabai, bawang)', 'Tumis bumbu halus', 'Masukkan kaldu dan serai', 'Larutkan tepung beras dengan air', 'Masukkan larutan tepung', 'Masak hingga kental', 'Siram sate dengan kuah kental', 'Taburi bawang goreng', 'Sajikan dengan ketupat atau lontong']
-                    },
-                    {
-                        name: 'Gulai Tunjang',
-                        emoji: '🍛',
-                        category: 'Gulai',
-                        desc: 'Gulai kikil sapi dengan kuah santan yang kental dan gurih. Masakan yang menunjukkan kepandaian memanfaatkan semua bagian hewan.',
-                        ingredients: ['Kikil/tunjang sapi 500g', 'Santan kental 500ml', 'Cabai merah 8 buah', 'Bawang merah 8 siung', 'Bawang putih 5 siung', 'Kemiri 5 butir', 'Kunyit 3 cm', 'Jahe 2 cm', 'Lengkuas 3 cm', 'Serai 2 batang', 'Daun jeruk 3 lembar', 'Asam kandis'],
-                        steps: ['Rebus kikil dengan bumbu rempah hingga empuk', 'Haluskan bumbu (cabai, bawang, kemiri, kunyit, jahe)', 'Tumis bumbu halus', 'Masukkan santan dan bumbu', 'Tambahkan lengkuas, serai, daun jeruk', 'Masukkan kikil yang sudah empuk', 'Masak dengan api kecil', 'Tambahkan asam kandis', 'Masak hingga kuah mengental dan berminyak', 'Sajikan hangat dengan nasi panas']
+                        desc: 'Sate daging sapi dengan kuah kental khas Minang yang gurih dan sedikit pedas.',
+                        ingredients: ['Daging sapi 500g', 'Lidah sapi 200g', 'Tepung beras 3 sdm', 'Kunyit 3 cm', 'Lengkuas 2 cm', 'Serai 2 batang'],
+                        steps: ['Rebus daging dan lidah hingga empuk', 'Potong dadu dan tusuk', 'Bakar sate hingga kecoklatan', 'Haluskan bumbu kuning', 'Tumis bumbu halus', 'Masukkan kaldu dan tepung', 'Masak hingga kental', 'Siram sate dengan kuah kental']
                     }
                 ]
             },
@@ -1162,25 +1109,17 @@
                         name: 'Babi Guling',
                         emoji: '🐷',
                         category: 'Makanan Utama',
-                        desc: 'Babi yang dibumbui lengkap dan dipanggang utuh, hidangan istimewa dalam upacara adat Bali. Simbol kemakmuran dan kegembiraan dalam ritual keagamaan.',
-                        ingredients: ['Babi muda 5kg', 'Base genep lengkap', 'Kunyit 100g', 'Jahe 50g', 'Lengkuas 50g', 'Serai 5 batang', 'Daun jeruk 10 lembar', 'Cabai merah 20 buah', 'Bawang merah 15 siung', 'Bawang putih 10 siung', 'Terasi 2 cm', 'Kemiri 10 butir', 'Ketumbar 2 sdm'],
-                        steps: ['Bersihkan babi secara menyeluruh', 'Haluskan semua bumbu menjadi base genep', 'Lumuri seluruh bagian babi dengan bumbu', 'Masukkan bumbu ke dalam perut babi', 'Tambahkan daun jeruk dan serai di dalam', 'Jahit perut babi dengan bambu', 'Tusuk bambu dari mulut hingga ekor', 'Panggang di atas bara sambil diputar 3-4 jam', 'Olesi dengan minyak sesekali', 'Tunggu hingga kulit kecoklatan dan renyah', 'Potong dan sajikan dengan lawar dan sambal']
+                        desc: 'Babi yang dibumbui lengkap dan dipanggang utuh, hidangan istimewa dalam upacara adat Bali.',
+                        ingredients: ['Babi muda 5kg', 'Base genep lengkap', 'Kunyit 100g', 'Lengkuas 50g', 'Serai 5 batang', 'Daun jeruk 10 lembar'],
+                        steps: ['Bersihkan babi secara menyeluruh', 'Haluskan semua bumbu menjadi base genep', 'Lumuri seluruh bagian babi', 'Tusuk bambu dari mulut hingga ekor', 'Panggang di atas bara 3-4 jam', 'Olesi dengan minyak sesekali', 'Potong dan sajikan dengan lawar']
                     },
                     {
                         name: 'Lawar',
                         emoji: '🥗',
                         category: 'Salad',
-                        desc: 'Campuran sayuran, kelapa parut, dan daging cincang dengan bumbu khas Bali yang kaya rempah. Setiap desa memiliki resep lawar yang berbeda.',
-                        ingredients: ['Kacang panjang 200g', 'Nangka muda 200g', 'Kelapa parut 200g', 'Daging cincang 300g', 'Base genep', 'Darah babi/sapi 100ml', 'Jeruk limau 3 buah', 'Kacang tanah goreng', 'Bawang merah goreng', 'Garam dan gula'],
-                        steps: ['Rebus kacang panjang dan nangka', 'Potong sayuran 2 cm', 'Tumis daging dengan base genep', 'Sangrai kelapa parut hingga harum', 'Campur semua sayuran', 'Masukkan daging dan kelapa', 'Tambahkan darah sedikit demi sedikit (opsional)', 'Bumbui dengan garam dan gula', 'Peras jeruk limau', 'Aduk rata semua bahan', 'Taburi kacang tanah goreng', 'Sajikan segar segera']
-                    },
-                    {
-                        name: 'Sate Lilit',
-                        emoji: '🎋',
-                        category: 'Sate',
-                        desc: 'Sate daging cincang yang dililitkan pada batang serai atau bambu. Mencerminkan kreativitas dan keindahan seni dalam kuliner Bali.',
-                        ingredients: ['Ikan/ayam cincang 500g', 'Kelapa parut 150g', 'Santan kental 100ml', 'Base genep', 'Batang serai 15 buah', 'Bawang merah 8 siung', 'Bawang putih 5 siung', 'Cabai merah 5 buah', 'Kunyit 2 cm', 'Telur 1 butir', 'Gula dan garam'],
-                        steps: ['Giling daging hingga halus', 'Haluskan bumbu (bawang, cabai, kunyit)', 'Campurkan daging dengan bumbu', 'Tambahkan kelapa parut dan santan', 'Masukkan telur sebagai perekat', 'Bumbui dengan garam dan gula', 'Aduk hingga adonan tercampur rata',                 'Ambil batang serai, pipihkan', 'Lilit adonan pada serai', 'Bakar di atas bara api', 'Bolak-balik hingga matang kecoklatan', 'Sajikan dengan sambal matah']
+                        desc: 'Campuran sayuran, kelapa parut, dan daging cincang dengan bumbu khas Bali yang kaya rempah.',
+                        ingredients: ['Kacang panjang 200g', 'Kelapa parut 200g', 'Daging cincang 300g', 'Base genep', 'Jeruk limau 3 buah'],
+                        steps: ['Rebus sayuran', 'Tumis daging dengan base genep', 'Sangrai kelapa parut', 'Campur semua bahan', 'Tambahkan jeruk limau', 'Aduk rata dan sajikan segar']
                     }
                 ]
             },
@@ -1193,17 +1132,17 @@
                         name: 'Kerak Telor',
                         emoji: '🍳',
                         category: 'Makanan Utama',
-                        desc: 'Makanan khas Betawi dari telur dan beras ketan yang dipanggang dengan serundeng. Hidangan legendaris dari masa kolonial.',
-                        ingredients: ['Beras ketan 200g', 'Telur bebek 3 butir', 'Ebi kering 50g', 'Bawang merah goreng', 'Kelapa sangrai 100g', 'Cabai merah', 'Jahe', 'Garam dan gula'],
-                        steps: ['Rendam beras ketan 2 jam', 'Sangrai kelapa dan ebi hingga kering', 'Panaskan wajan kecil', 'Masukkan ketan dan sedikit air', 'Tambahkan telur bebek di atas ketan', 'Balik wajan di atas bara', 'Panggang hingga ketan garing', 'Taburi serundeng kelapa dan ebi', 'Tambahkan bawang goreng', 'Sajikan hangat']
+                        desc: 'Makanan khas Betawi dari telur dan beras ketan yang dipanggang dengan serundeng.',
+                        ingredients: ['Beras ketan 200g', 'Telur bebek 3 butir', 'Ebi kering 50g', 'Bawang merah goreng', 'Kelapa sangrai 100g'],
+                        steps: ['Rendam beras ketan 2 jam', 'Sangrai kelapa dan ebi', 'Panaskan wajan kecil', 'Masukkan ketan dan telur', 'Balik wajan di atas bara', 'Panggang hingga garing', 'Taburi serundeng']
                     },
                     {
                         name: 'Soto Betawi',
                         emoji: '🥘',
                         category: 'Soto',
-                        desc: 'Soto dengan kuah santan gurih berisi daging sapi, jeroan, dan tomat. Mencerminkan kemewahan Betawi tempo dulu.',
-                        ingredients: ['Daging sapi 500g', 'Jeroan 200g', 'Santan 500ml', 'Tomat 3 buah', 'Kentang 2 buah', 'Seledri', 'Bawang goreng', 'Emping', 'Bumbu halus lengkap'],
-                        steps: ['Rebus daging dan jeroan', 'Tumis bumbu halus', 'Masukkan santan dan kaldu', 'Tambahkan tomat dan kentang', 'Masak hingga kentang empuk', 'Sajikan dengan emping dan bawang goreng']
+                        desc: 'Soto dengan kuah santan gurih berisi daging sapi, jeroan, dan tomat.',
+                        ingredients: ['Daging sapi 500g', 'Jeroan 200g', 'Santan 500ml', 'Tomat 3 buah', 'Kentang 2 buah'],
+                        steps: ['Rebus daging dan jeroan', 'Tumis bumbu halus', 'Masukkan santan dan kaldu', 'Tambahkan tomat dan kentang', 'Sajikan dengan emping']
                     }
                 ]
             },
@@ -1216,32 +1155,9 @@
                         name: 'Coto Makassar',
                         emoji: '🍲',
                         category: 'Soto',
-                        desc: 'Sup jeroan dengan kuah kacang yang kental dan gurih. Hidangan favorit pelaut yang menghangatkan.',
-                        ingredients: ['Jeroan sapi 500g', 'Kacang tanah 200g', 'Daging sapi 300g', 'Beras sangrai 3 sdm', 'Bumbu lengkap', 'Ketupat', 'Bawang goreng'],
-                        steps: ['Rebus jeroan dan daging', 'Sangrai kacang dan beras', 'Haluskan kacang dan beras', 'Tumis bumbu halus', 'Masukkan ke kaldu', 'Masak hingga kental', 'Sajikan dengan ketupat']
-                    },
-                    {
-                        name: 'Pallubasa',
-                        emoji: '🥣',
-                        category: 'Soto',
-                        desc: 'Mirip coto tapi kuahnya lebih encer dengan kelapa sangrai. Khas masyarakat Bugis pesisir.',
-                        ingredients: ['Daging sapi 500g', 'Jeroan 300g', 'Kelapa sangrai 100g', 'Beras sangrai 2 sdm', 'Bumbu halus', 'Daun bawang'],
-                        steps: ['Rebus daging dan jeroan', 'Sangrai kelapa dan beras', 'Haluskan kelapa dan beras', 'Masukkan ke kuah kaldu', 'Bumbui dengan bumbu halus', 'Sajikan dengan buras']
-                    }
-                ]
-            },
-            'Kalimantan Barat': {
-                island: 'kalimantan',
-                icon: '🌴',
-                desc: 'Cita rasa Melayu Pontianak yang unik',
-                foods: [
-                    {
-                        name: 'Bubur Pedas',
-                        emoji: '🥣',
-                        category: 'Makanan Utama',
-                        desc: 'Bubur sayuran dengan kuah pedas khas Sambas. Bukan bubur manis tapi hidangan berkuah pedas.',
-                        ingredients: ['Beras 200g', 'Ikan teri 100g', 'Daun kemangi', 'Terong', 'Kacang panjang', 'Lengkuas', 'Serai', 'Bumbu pedas'],
-                        steps: ['Masak beras hingga menjadi bubur', 'Tumis bumbu halus', 'Masukkan sayuran', 'Tambahkan ikan teri', 'Tuang ke bubur', 'Masak hingga kuah meresap', 'Taburi kemangi']
+                        desc: 'Sup jeroan dengan kuah kacang yang kental dan gurih.',
+                        ingredients: ['Jeroan sapi 500g', 'Kacang tanah 200g', 'Daging sapi 300g', 'Beras sangrai 3 sdm', 'Ketupat'],
+                        steps: ['Rebus jeroan dan daging', 'Sangrai kacang dan beras', 'Haluskan kacang dan beras', 'Tumis bumbu halus', 'Masak hingga kental', 'Sajikan dengan ketupat']
                     }
                 ]
             },
@@ -1254,23 +1170,22 @@
                         name: 'Gudeg Yogya',
                         emoji: '🥘',
                         category: 'Makanan Utama',
-                        desc: 'Versi Yogyakarta dari gudeg yang lebih manis dan kering. Mencerminkan kesabaran dan ketelatenan masyarakat Yogya.',
-                        ingredients: ['Nangka muda 1kg', 'Santan kental', 'Gula merah 250g', 'Telur', 'Ayam kampung', 'Bumbu lengkap'],
-                        steps: ['Sama dengan gudeg Solo tapi lebih manis', 'Masak lebih lama hingga sangat kering', 'Gula merah lebih banyak', 'Warna lebih gelap']
+                        desc: 'Versi Yogyakarta dari gudeg yang lebih manis dan kering.',
+                        ingredients: ['Nangka muda 1kg', 'Santan kental', 'Gula merah 250g', 'Telur', 'Ayam kampung'],
+                        steps: ['Masak seperti gudeg Solo', 'Lebih banyak gula merah', 'Masak lebih lama hingga kering', 'Warna lebih gelap']
                     },
                     {
                         name: 'Bakpia Pathok',
                         emoji: '🥮',
                         category: 'Kue',
-                        desc: 'Kue kacang hijau dengan kulit tipis yang renyah. Oleh-oleh khas Yogyakarta yang legendaris.',
-                        ingredients: ['Tepung terigu', 'Kacang hijau 300g', 'Gula pasir', 'Minyak', 'Air'],
-                        steps: ['Kukus dan haluskan kacang hijau', 'Campur dengan gula', 'Buat kulit dari tepung', 'Isi dengan kacang hijau', 'Bentuk bulat pipih', 'Panggang hingga kecoklatan']
+                        desc: 'Kue kacang hijau dengan kulit tipis yang renyah.',
+                        ingredients: ['Tepung terigu', 'Kacang hijau 300g', 'Gula pasir', 'Minyak'],
+                        steps: ['Kukus dan haluskan kacang hijau', 'Campur dengan gula', 'Buat kulit dari tepung', 'Isi dengan kacang hijau', 'Panggang hingga kecoklatan']
                     }
                 ]
             }
         };
 
-        // Initialize
         let currentProvince = null;
         let currentFilter = 'all';
         let allFoods = [];
@@ -1335,14 +1250,15 @@
                         <h3 class="culinary-name">${food.name}</h3>
                         <div class="culinary-tags">
                             <span class="tag">${province}</span>
-                            <span class="tag secondary">${food.category}</span>
+                            <span class="tag">${food.category}</span>
                         </div>
                         <p class="culinary-desc">${food.desc}</p>
-                        <button class="watch-tutorial" onclick='openModal(${JSON.stringify(food).replace(/'/g, "&#39;")})'>
-                            <span>▶</span> Tonton Tutorial Lengkap
+                        <button class="watch-tutorial">
+                            ▶ Lihat Resep Lengkap
                         </button>
                     </div>
                 `;
+                card.querySelector('.watch-tutorial').onclick = () => openModal(food);
                 grid.appendChild(card);
             });
             
@@ -1358,7 +1274,7 @@
         function openModal(food) {
             document.getElementById('modalTitle').textContent = food.name;
             document.getElementById('videoPlayer').innerHTML = `
-                <span style="font-size: 8rem; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5))">${food.emoji}</span>
+                <span style="font-size: clamp(5rem, 10vw, 8rem); filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5))">${food.emoji}</span>
                 <div style="position: absolute; bottom: 20px; color: rgba(255,255,255,0.6); font-size: 1rem;">
                     📹 Video tutorial akan segera tersedia
                 </div>
@@ -1375,21 +1291,25 @@
             document.getElementById('stepsSection').innerHTML = stepsHtml;
             
             document.getElementById('videoModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             document.getElementById('videoModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
 
         function openSearch() {
             document.getElementById('searchModal').classList.add('active');
             document.getElementById('searchInput').focus();
+            document.body.style.overflow = 'hidden';
         }
 
         function closeSearch() {
             document.getElementById('searchModal').classList.remove('active');
             document.getElementById('searchInput').value = '';
             document.getElementById('searchResults').innerHTML = '';
+            document.body.style.overflow = 'auto';
         }
 
         function searchCulinary() {
@@ -1414,47 +1334,43 @@
             }
             
             results.innerHTML = filtered.map(food => `
-                <div class="search-result-item" onclick='openModal(${JSON.stringify(food).replace(/'/g, "&#39;")})'>
+                <div class="search-result-item">
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <span style="font-size: 3rem;">${food.emoji}</span>
                         <div style="flex: 1;">
-                            <h4 style="color: var(--primary); margin-bottom: 5px; font-size: 1.3rem;">${food.name}</h4>
+                            <h4 style="color: #FFD700; margin-bottom: 5px; font-size: 1.3rem;">${food.name}</h4>
                             <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">${food.province} • ${food.category}</p>
                         </div>
                     </div>
                 </div>
             `).join('');
+
+            document.querySelectorAll('.search-result-item').forEach((item, index) => {
+                item.onclick = () => {
+                    closeSearch();
+                    openModal(filtered[index]);
+                };
+            });
         }
 
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Close modal on click outside
         window.onclick = function(event) {
             const modal = document.getElementById('videoModal');
             const searchModal = document.getElementById('searchModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-            if (event.target === searchModal) {
-                closeSearch();
-            }
+            if (event.target === modal) closeModal();
+            if (event.target === searchModal) closeSearch();
         }
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
                 closeSearch();
             }
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                openSearch();
-            }
         });
 
-        // Initialize app
         initializeData();
         renderProvinces();
     </script>
