@@ -18,10 +18,69 @@
             body {
                 font-family: "Inter", "Segoe UI", system-ui, sans-serif;
                 line-height: 1.6;
-                color: #1a1a1a;
+                color: 
+#1a1a1a;
                 overflow-x: hidden;
-                background: #0a0a0a;
+                background: 
+#0a0a0a;
                 scroll-behavior: smooth;
+                position: relative;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('batik.png');
+                background-repeat: repeat;
+                background-size: 400px 400px;
+                opacity: 0.25;
+                z-index: 0;
+                pointer-events: none;
+                animation: batikMove 40s linear infinite;
+                filter: brightness(1.5) contrast(1.2);
+            }
+
+            /* Fallback jika batik.png tidak ditemukan */
+            body::after {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: 
+                    repeating-linear-gradient(
+                        45deg,
+                        transparent,
+                        transparent 35px,
+                        rgba(255, 215, 0, 0.05) 35px,
+                        rgba(255, 215, 0, 0.05) 70px
+                    ),
+                    repeating-linear-gradient(
+                        -45deg,
+                        transparent,
+                        transparent 35px,
+                        rgba(255, 165, 0, 0.05) 35px,
+                        rgba(255, 165, 0, 0.05) 70px
+                    );
+                z-index: 0;
+                pointer-events: none;
+                opacity: 0.8;
+            }
+            @keyframes batikMove {
+                0% {
+                    background-position: 0 0;
+                }
+                100% {
+                    background-position: 400px 400px;
+                }
+            }
+            body > * {
+                position: relative;
+                z-index: 1;
             }
 
             html {
@@ -338,7 +397,7 @@
             .stat-card {
                 text-align: center;
                 padding: 2rem;
-                background: rgba(255, 255, 255, 0.03);
+                background: black;
                 border-radius: 20px;
                 border: 1px solid rgba(255, 215, 0, 0.2);
                 transition: all 0.3s;
@@ -409,7 +468,7 @@
             }
 
             .filter-btn {
-                background: rgba(255, 255, 255, 0.05);
+                background: black;
                 border: 2px solid rgba(255, 215, 0, 0.2);
                 color: rgba(255, 255, 255, 0.8);
                 padding: 0.8rem 1.5rem;
@@ -479,11 +538,7 @@
             }
 
             .province-card {
-                background: linear-gradient(
-                    135deg,
-                    rgba(255, 215, 0, 0.05) 0%,
-                    rgba(255, 165, 0, 0.05) 100%
-                );
+                background: black;
                 border-radius: 25px;
                 overflow: hidden;
                 cursor: pointer;
@@ -547,7 +602,7 @@
             }
 
             .culinary-card {
-                background: rgba(255, 255, 255, 0.03);
+                background: black;
                 border-radius: 25px;
                 overflow: hidden;
                 cursor: pointer;
@@ -1047,11 +1102,7 @@
             .ai-chat-container {
                 max-width: 1000px;
                 margin: 0 auto;
-                background: linear-gradient(
-                    135deg,
-                    rgba(255, 215, 0, 0.05) 0%,
-                    rgba(255, 165, 0, 0.05) 100%
-                );
+                background: black;
                 border: 1px solid rgba(255, 215, 0, 0.2);
                 border-radius: 20px;
                 overflow: hidden;
@@ -1220,7 +1271,7 @@
 
             .province-tab {
                 padding: 1rem 1.5rem;
-                background: rgba(255, 255, 255, 0.05);
+                background:black;
                 border: 2px solid rgba(255, 215, 0, 0.2);
                 border-radius: 12px;
                 color: rgba(255, 255, 255, 0.8);
@@ -1244,11 +1295,7 @@
             }
 
             .community-chat {
-                background: linear-gradient(
-                    135deg,
-                    rgba(255, 215, 0, 0.05) 0%,
-                    rgba(255, 165, 0, 0.05) 100%
-                );
+                background: black;
                 border: 1px solid rgba(255, 215, 0, 0.2);
                 border-radius: 20px;
                 overflow: hidden;
@@ -1398,11 +1445,7 @@
             }
 
             .team-member {
-                background: linear-gradient(
-                    135deg,
-                    rgba(255, 215, 0, 0.05) 0%,
-                    rgba(255, 165, 0, 0.05) 100%
-                );
+                background: black;
                 border: 1px solid rgba(255, 215, 0, 0.2);
                 border-radius: 20px;
                 padding: 2.5rem 1.5rem;
