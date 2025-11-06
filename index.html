@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="id">
     <head>
+        <link href="https://fonts.googleapis.com/css2?family=Maharlika&display=swap" rel="stylesheet">
+
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Cakranesia - Jelajahi Cita Rasa Nusantara</title>
@@ -94,14 +96,22 @@
                 border-radius: 8px;
             }
 
+            @font-face {
+  font-family: 'Maharlika';
+  src: url('fonts/Maharlika.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
             .logo {
-                font-size: 1.5rem;
-                font-weight: 800;
-                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                letter-spacing: -1px;
-            }
+    font-family: 'Maharlika';
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
 
             .nav-links {
                 display: flex;
@@ -126,11 +136,11 @@
             }
 
             .search-btn {
-                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                background: linear-gradient(135deg, #ffd900 0%, #ffa500 100%);
                 border: none;
                 padding: 0.7rem 1.5rem;
                 border-radius: 30px;
-                color: #0a0a0a;
+                color: #ffffff;
                 font-weight: 700;
                 cursor: pointer;
                 transition: all 0.3s;
@@ -237,6 +247,7 @@
             }
 
             .hero h1 {
+                font-family: 'Maharlika';
                 font-size: clamp(2.5rem, 5vw, 4.5rem);
                 font-weight: 900;
                 color: white;
@@ -2085,7 +2096,7 @@
                         oninput="searchCulinary()"
                     />
                     <span class="search-close-icon" onclick="clearSearch()">×</span>
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon"></span>
                 </div>
                 <div class="search-results" id="searchResults"></div>
             </div>
