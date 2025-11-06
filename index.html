@@ -35,12 +35,12 @@
                 height: 100%;
                 background-image: url('batik.png');
                 background-repeat: repeat;
-                background-size: 400px 400px;
-                opacity: 0.25;
+                background-size: 450px 450px;
+                opacity: 0.35;
                 z-index: 0;
                 pointer-events: none;
-                animation: batikMove 40s linear infinite;
-                filter: brightness(1.5) contrast(1.2);
+                animation: batikMove 35s linear infinite;
+                filter: brightness(3) contrast(3);
             }
 
             /* Fallback jika batik.png tidak ditemukan */
@@ -51,21 +51,6 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: 
-                    repeating-linear-gradient(
-                        45deg,
-                        transparent,
-                        transparent 35px,
-                        rgba(255, 215, 0, 0.05) 35px,
-                        rgba(255, 215, 0, 0.05) 70px
-                    ),
-                    repeating-linear-gradient(
-                        -45deg,
-                        transparent,
-                        transparent 35px,
-                        rgba(255, 165, 0, 0.05) 35px,
-                        rgba(255, 165, 0, 0.05) 70px
-                    );
                 z-index: 0;
                 pointer-events: none;
                 opacity: 0.8;
