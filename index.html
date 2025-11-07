@@ -59,7 +59,7 @@
 
 
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <title>Cakranesia - Jelajahi Cita Rasa Nusantara</title>
         <style>
             * {
@@ -273,7 +273,8 @@
                 align-items: center;
                 justify-content: center;
                 padding: 2rem;
-                top: -1rem;
+                margin-top: -80px;
+                padding-top: 120px;
             }
 
             .hero::before {
@@ -348,7 +349,7 @@
 
             .hero h1 {
                 font-family: 'Source Serif 4', serif;
-                font-size: clamp(2.5rem, 5vw, 4.5rem);
+                font-size: clamp(2rem, 5vw, 4.5rem);
                 font-weight: 900;
                 color: white;
                 margin-bottom: 1.5rem;
@@ -387,7 +388,7 @@
             }
 
             .hero p {
-                font-size: clamp(1rem, 2vw, 1.2rem);
+                font-size: clamp(0.95rem, 2vw, 1.2rem);
                 color: rgba(255, 255, 255, 0.7);
                 margin-bottom: 2rem;
                 line-height: 1.8;
@@ -412,8 +413,9 @@
 
             .carousel-image-container {
                 position: relative;
-                width: 400px;
-                height: 400px;
+                width: 100%;
+                max-width: 400px;
+                aspect-ratio: 1;
                 margin-bottom: 2rem;
             }
 
@@ -446,7 +448,7 @@
             .carousel-caption {
                 text-align: center;
                 font-family: 'Source Serif 4', serif;
-                font-size: clamp(1.8rem, 3vw, 2.5rem);
+                font-size: clamp(1.5rem, 3vw, 2.5rem);
                 font-weight: 600;
                 color: white;
                 margin-bottom: 1rem;
@@ -557,7 +559,7 @@
 
             .stats-section {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 2rem;
                 padding: 4rem 2rem;
                 max-width: 1400px;
@@ -580,7 +582,7 @@
             }
 
             .stat-number {
-                font-size: clamp(2rem, 4vw, 3rem);
+                font-size: clamp(1.8rem, 4vw, 3rem);
                 font-weight: 700;
                 background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
                 -webkit-background-clip: text;
@@ -588,7 +590,7 @@
             }
 
             .stat-label {
-                font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1.1rem);
                 color: rgba(255, 255, 255, 0.7);
                 margin-top: 0.5rem;
             }
@@ -615,7 +617,7 @@
             }
 
             .section-title {
-                font-size: clamp(2rem, 4vw, 3.5rem);
+                font-size: clamp(1.8rem, 4vw, 3.5rem);
                 font-weight: 900;
                 color: white;
                 margin-bottom: 1.5rem;
@@ -623,7 +625,7 @@
             }
 
             .section-description {
-                font-size: clamp(1rem, 2vw, 1.2rem);
+                font-size: clamp(0.95rem, 2vw, 1.2rem);
                 color: rgba(255, 255, 255, 0.6);
                 max-width: 700px;
                 margin: 0 auto;
@@ -702,7 +704,7 @@
                 display: grid;
                 grid-template-columns: repeat(
                     auto-fit,
-                    minmax(min(100%, 320px), 1fr)
+                    minmax(min(100%, 280px), 1fr)
                 );
                 gap: 2rem;
             }
@@ -725,7 +727,7 @@
 
             .province-image {
                 width: 100%;
-                height: 250px;
+                height: 200px;
                 object-fit: cover;
                 background: linear-gradient(
                     135deg,
@@ -735,11 +737,11 @@
             }
 
             .province-content {
-                padding: 2rem;
+                padding: 1.5rem;
             }
 
             .province-name {
-                font-size: clamp(1.5rem, 2.5vw, 2rem);
+                font-size: clamp(1.3rem, 2.5vw, 2rem);
                 font-weight: 700;
                 margin-bottom: 1rem;
                 color: #ffd700;
@@ -749,7 +751,7 @@
                 color: rgba(255, 255, 255, 0.7);
                 line-height: 1.8;
                 margin-bottom: 1.5rem;
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             .province-count {
@@ -766,7 +768,7 @@
                 display: grid;
                 grid-template-columns: repeat(
                     auto-fit,
-                    minmax(min(100%, 350px), 1fr)
+                    minmax(min(100%, 280px), 1fr)
                 );
                 gap: 2rem;
             }
@@ -788,7 +790,7 @@
 
             .culinary-thumbnail {
                 width: 100%;
-                height: 250px;
+                height: 200px;
                 object-fit: cover;
                 background: linear-gradient(
                     135deg,
@@ -798,11 +800,11 @@
             }
 
             .culinary-content {
-                padding: 2rem;
+                padding: 1.5rem;
             }
 
             .culinary-name {
-                font-size: clamp(1.3rem, 2vw, 1.8rem);
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
                 font-weight: 700;
                 margin-bottom: 1rem;
                 color: white;
@@ -828,7 +830,7 @@
                 color: rgba(255, 255, 255, 0.7);
                 line-height: 1.8;
                 margin-bottom: 1.5rem;
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             .watch-tutorial {
@@ -983,7 +985,7 @@
             }
 
             .modal h2 {
-                font-size: clamp(1.8rem, 3vw, 2.5rem);
+                font-size: clamp(1.5rem, 3vw, 2.5rem);
                 color: white;
                 margin-bottom: 1rem;
             }
@@ -993,7 +995,7 @@
             }
 
             .recipe-section h3 {
-                font-size: clamp(1.3rem, 2vw, 1.8rem);
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
                 color: #ffd700;
                 margin-bottom: 1.5rem;
                 display: flex;
@@ -1005,7 +1007,7 @@
                 display: grid;
                 grid-template-columns: repeat(
                     auto-fit,
-                    minmax(min(100%, 200px), 1fr)
+                    minmax(min(100%, 180px), 1fr)
                 );
                 gap: 0.8rem;
                 margin-bottom: 2rem;
@@ -1215,14 +1217,14 @@
 
             .chat-header h3 {
                 color: #0a0a0a;
-                font-size: clamp(1.3rem, 2vw, 1.8rem);
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
                 font-weight: 800;
                 margin-bottom: 0.5rem;
             }
 
             .chat-header p {
                 color: rgba(10, 10, 10, 0.8);
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             .chat-messages {
@@ -1443,19 +1445,19 @@
             .user-name {
                 color: #ffd700;
                 font-weight: 700;
-                font-size: clamp(0.95rem, 1.5vw, 1rem);
+                font-size: clamp(0.9rem, 1.5vw, 1rem);
             }
 
             .message-time {
                 color: rgba(255, 255, 255, 0.5);
-                font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+                font-size: clamp(0.75rem, 1.2vw, 0.85rem);
             }
 
             .message-text {
                 color: rgba(255, 255, 255, 0.9);
                 line-height: 1.6;
                 margin-bottom: 0.8rem;
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             .message-attachment {
@@ -1470,7 +1472,7 @@
                 color: #ffd700;
                 text-decoration: none;
                 transition: all 0.3s;
-                font-size: clamp(0.85rem, 1.2vw, 0.9rem);
+                font-size: clamp(0.8rem, 1.2vw, 0.9rem);
             }
 
             .message-attachment:hover {
@@ -1538,7 +1540,7 @@
                 display: grid;
                 grid-template-columns: repeat(
                     auto-fit,
-                    minmax(min(100%, 240px), 1fr)
+                    minmax(min(100%, 200px), 1fr)
                 );
                 gap: 2rem;
             }
@@ -1547,7 +1549,7 @@
                 background: black;
                 border: 1px solid rgba(255, 215, 0, 0.2);
                 border-radius: 20px;
-                padding: 2.5rem 1.5rem;
+                padding: 2rem 1.5rem;
                 text-align: center;
                 transition: all 0.4s;
             }
@@ -1559,15 +1561,15 @@
             }
 
             .team-avatar {
-                width: 100px;
-                height: 100px;
+                width: 90px;
+                height: 90px;
                 background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
                 border-radius: 50%;
                 margin: 0 auto 1.5rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 2rem;
+                font-size: 1.8rem;
                 font-weight: 800;
                 color: #0a0a0a;
                 box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
@@ -1580,14 +1582,14 @@
 
             .team-member h3 {
                 color: white;
-                font-size: clamp(1.1rem, 2vw, 1.3rem);
+                font-size: clamp(1rem, 2vw, 1.3rem);
                 font-weight: 700;
                 margin-bottom: 0.8rem;
             }
 
             .team-member p {
                 color: rgba(255, 255, 255, 0.7);
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             footer {
@@ -1603,14 +1605,14 @@
                 display: grid;
                 grid-template-columns: repeat(
                     auto-fit,
-                    minmax(min(100%, 250px), 1fr)
+                    minmax(min(100%, 200px), 1fr)
                 );
                 gap: 2.5rem;
             }
 
             .footer-section h3 {
                 color: #ffd700;
-                font-size: clamp(1.1rem, 2vw, 1.3rem);
+                font-size: clamp(1rem, 2vw, 1.3rem);
                 font-weight: 700;
                 margin-bottom: 1.5rem;
             }
@@ -1623,7 +1625,7 @@
                 display: block;
                 padding: 0.3rem 0;
                 transition: color 0.3s;
-                font-size: clamp(0.9rem, 1.5vw, 1rem);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
 
             .footer-section a:hover {
@@ -1635,7 +1637,23 @@
                 padding-top: 2rem;
                 border-top: 1px solid rgba(255, 215, 0, 0.1);
                 color: rgba(255, 255, 255, 0.5);
-                font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+                font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+            }
+
+            /* RESPONSIVE BREAKPOINTS */
+            @media (max-width: 1024px) {
+                .hero-content {
+                    gap: 3rem;
+                }
+
+                .carousel-image-container {
+                    max-width: 350px;
+                }
+
+                .stats-section {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                }
             }
 
             @media (max-width: 968px) {
@@ -1676,22 +1694,26 @@
                 }
 
                 .section {
-                    padding: 2rem 1.5rem;
+                    padding: 3rem 1.5rem;
+                }
+
+                .hero {
+                    padding: 2rem 1rem;
+                    padding-top: 100px;
                 }
 
                 .hero-content {
                     grid-template-columns: 1fr;
-                    gap: 3rem;
+                    gap: 2.5rem;
+                    padding: 1rem;
                 }
 
                 .carousel-image-container {
-                    width: 300px;
-                    height: 300px;
+                    max-width: 280px;
                 }
 
                 .provinces-grid,
                 .culinary-grid {
-                    grid-template-columns: 1fr;
                     gap: 1.5rem;
                 }
 
@@ -1730,18 +1752,33 @@
                 }
 
                 .section {
-                    padding: 2rem 1rem;
+                    padding: 2.5rem 1rem;
+                }
+
+                .hero {
+                    padding: 1.5rem 0.5rem;
+                    padding-top: 90px;
+                }
+
+                .hero-content {
+                    gap: 2rem;
+                    padding: 0.5rem;
+                }
+
+                .hero-badge {
+                    font-size: 0.7rem;
+                    padding: 0.5rem 1rem;
+                    letter-spacing: 0.5px;
                 }
 
                 .carousel-image-container {
-                    width: 250px;
-                    height: 250px;
+                    max-width: 240px;
                 }
 
                 .stats-section {
                     grid-template-columns: repeat(2, 1fr);
                     gap: 1rem;
-                    padding: 2rem 1rem;
+                    padding: 2.5rem 1rem;
                 }
 
                 .stat-card {
@@ -1750,17 +1787,18 @@
 
                 .culinary-thumbnail,
                 .province-image {
-                    height: 200px;
+                    height: 180px;
                 }
 
                 .culinary-content,
                 .province-content {
-                    padding: 1.5rem;
+                    padding: 1.2rem;
                 }
 
                 .modal-content {
                     padding: 1.5rem 1rem;
                     max-height: 85vh;
+                    border-radius: 20px;
                 }
 
                 .ingredients-grid {
@@ -1771,15 +1809,140 @@
                     width: 40px;
                     height: 40px;
                     font-size: 1.3rem;
+                    top: 1rem;
+                    right: 1rem;
                 }
 
                 .chat-messages,
                 .community-messages {
                     height: 300px;
+                    padding: 1rem;
+                }
+
+                .message-content {
+                    max-width: 85%;
+                    padding: 0.9rem 1.1rem;
                 }
 
                 .team-grid {
                     grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+
+                .team-avatar {
+                    width: 80px;
+                    height: 80px;
+                    font-size: 1.6rem;
+                }
+
+                .cta-buttons {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .cta-button {
+                    width: 100%;
+                    text-align: center;
+                    padding: 1rem 2rem;
+                }
+
+                .filter-section {
+                    gap: 0.8rem;
+                }
+
+                .filter-btn {
+                    padding: 0.7rem 1.2rem;
+                    font-size: 0.85rem;
+                }
+
+                .search-container {
+                    padding: 1.5rem 1rem;
+                }
+
+                .search-input {
+                    padding: 1rem 3rem 1rem 1.2rem;
+                    font-size: 1rem;
+                }
+
+                .toolbar-btn {
+                    padding: 0.7rem 1rem;
+                    font-size: 1rem;
+                }
+
+                .youtube-link {
+                    padding: 0.9rem 1.5rem;
+                    font-size: 0.9rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .hero h1 {
+                    font-size: 1.8rem;
+                }
+
+                .carousel-image-container {
+                    max-width: 200px;
+                }
+
+                .carousel-caption {
+                    font-size: 1.3rem;
+                }
+
+                .stats-section {
+                    padding: 2rem 0.5rem;
+                }
+
+                .section-title {
+                    font-size: 1.6rem;
+                }
+
+                .modal-content {
+                    padding: 1.2rem 0.8rem;
+                }
+
+                .step-item {
+                    padding-left: 2.5rem;
+                    font-size: 0.85rem;
+                }
+
+                .step-item::before {
+                    width: 26px;
+                    height: 26px;
+                    font-size: 0.8rem;
+                }
+
+                .chat-input-wrapper,
+                .community-input-wrapper {
+                    flex-direction: column;
+                }
+
+                .send-btn {
+                    width: 100%;
+                    padding: 1rem;
+                }
+
+                .team-member {
+                    padding: 1.5rem 1rem;
+                }
+            }
+
+            @media (max-width: 375px) {
+                .logo {
+                    font-size: 1rem;
+                }
+
+                .logo-image {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                .carousel-image-container {
+                    max-width: 180px;
+                }
+
+                .hero-badge {
+                    font-size: 0.65rem;
+                    padding: 0.4rem 0.8rem;
                 }
             }
         </style>
@@ -1813,7 +1976,7 @@
                 <div class="hero-content">
                     <div class="hero-text">
                         <div class="hero-badge">
-                            Cita Rasa Kuliner dan Ragam Adiluhung Sinergi Nusantara - BudayaGO! 2025
+                            Kuliner Nusantara - BudayaGO! 2025
                         </div>
                         <h1>
                             <span class="gradient-text">Jelajahi Cita Rasa</span><br />Nusantara
@@ -3104,4 +3267,3 @@
         </script>
     </body>
 </html>
-
