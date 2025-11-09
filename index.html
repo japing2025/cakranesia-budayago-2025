@@ -84,7 +84,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-image: url('batik.png');
+                background-image: url('batikdone.png');
                 background-repeat: repeat;
                 background-size: 450px 450px;
                 opacity: 0.50;
@@ -856,7 +856,7 @@
             }
 
             .back-btn {
-                background: rgba(255, 215, 0, 0.1);
+                background: black;
                 border: 2px solid rgba(255, 215, 0, 0.3);
                 color: #ffd700;
                 padding: 0.9rem 1.8rem;
@@ -1561,19 +1561,14 @@
             }
 
             .team-avatar {
-                width: 90px;
-                height: 90px;
-                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                width: 120px;
+                height: 120px;
                 border-radius: 50%;
                 margin: 0 auto 1.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.8rem;
-                font-weight: 800;
-                color: #0a0a0a;
+                object-fit: cover;
                 box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
                 transition: transform 0.4s;
+                border: 3px solid #ffd700;
             }
 
             .team-member:hover .team-avatar {
@@ -1591,6 +1586,7 @@
                 color: rgba(255, 255, 255, 0.7);
                 font-size: clamp(0.85rem, 1.5vw, 1rem);
             }
+            
 
             footer {
                 background: #050505;
@@ -2312,27 +2308,27 @@
                 </div>
                 <div class="team-grid">
                     <div class="team-member">
-                        <div class="team-avatar">NP</div>
+                        <img src="nabila.jpg" alt="Nabila Dwi Putri Zaskia" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=NP'">
                         <h3>Nabila Dwi Putri Zaskia</h3>
                         <p>Project Manager & Penulis Proposal</p>
                     </div>
                     <div class="team-member">
-                        <div class="team-avatar">MV</div>
+                        <img src="vigar.jpg" alt="Muhammad Vigar Septianta Pratama" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MV'">
                         <h3>Muhammad Vigar Septianta Pratama</h3>
                         <p>Frontend Developer (UI/UX)</p>
                     </div>
                     <div class="team-member">
-                        <div class="team-avatar">AI</div>
+                        <img src="fadhil.jpg" alt="Ahmad Isnainil Fadhili" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=AI'">
                         <h3>Ahmad Isnainil Fadhili</h3>
                         <p>Backend Developer</p>
                     </div>
                     <div class="team-member">
-                        <div class="team-avatar">MK</div>
+                        <img src="kevin.jpg" alt="M. Kevin Bayu Maulidi" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MK'">
                         <h3>M. Kevin Bayu Maulidi</h3>
                         <p>Content Researcher</p>
                     </div>
                     <div class="team-member">
-                        <div class="team-avatar">MA</div>
+                        <img src="dika.jpg" alt="M. Andika Aulia Haq" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MA'">
                         <h3>M. Andika Aulia Haq</h3>
                         <p>Multimedia Designer</p>
                     </div>
@@ -3267,4 +3263,3 @@
         </script>
     </body>
 </html>
-
