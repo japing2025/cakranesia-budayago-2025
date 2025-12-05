@@ -1,955 +1,3266 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriPest Detect Pro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        green: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                        },
-                        emerald: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            200: '#a7f3d0',
-                            300: '#6ee7b7',
-                            400: '#34d399',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                            900: '#064e3b',
-                        },
-                    }
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+
+<script>
+  const carouselData = [
+    { 
+      src: "gudeg.jpg", 
+      alt: "Gudeg", 
+      highlight: "Gudeg", 
+      text: "khas Yogyakarta" 
+    },
+    { 
+      src: "rendang.jpg", 
+      alt: "Rendang", 
+      highlight: "Rendang", 
+      text: "khas Palembang" 
+    },
+    { 
+      src: "coto.jpg", 
+      alt: "Sate", 
+      highlight: "Coto Makassar", 
+      text: "khas Makassar" 
+    }
+  ];
+
+  let currentIndex = 0;
+
+  function changeCarouselSlide(index) {
+    const image = document.getElementById("carouselImage");
+    const highlight = document.getElementById("carouselHighlight");
+    const text = document.getElementById("carouselText");
+    const dots = document.querySelectorAll(".carousel-dot");
+
+    // Update gambar & teks
+    image.src = carouselData[index].src;
+    image.alt = carouselData[index].alt;
+    highlight.textContent = carouselData[index].highlight;
+    text.textContent = " " + carouselData[index].text;
+
+    // Update indikator dot aktif
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+
+    // Simpan posisi sekarang
+    currentIndex = index;
+  }
+
+  // 🔄 Fungsi untuk otomatis ganti slide setiap 3 detik
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % carouselData.length;
+    changeCarouselSlide(currentIndex);
+  }, 3000);
+</script>
+
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Cakranesia - Jelajahi Cita Rasa Nusantara</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+                line-height: 1.6;
+                color: #1a1a1a;
+                overflow-x: hidden;
+                background: #0a0a0a;
+                scroll-behavior: smooth;
+                position: relative;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('batikdone.png');
+                background-repeat: repeat;
+                background-size: 450px 450px;
+                opacity: 0.50;
+                z-index: 0;
+                pointer-events: none;
+                animation: batikMove 35s linear infinite;
+                filter: brightness(3) contrast(3);
+            }
+
+            body::after {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+                opacity: 0.5;
+            }
+            @keyframes batikMove {
+                0% {
+                    background-position: 0 0;
+                }
+                100% {
+                    background-position: 400px 400px;
                 }
             }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-green-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-xl shadow-lg">
-                        <i class="fas fa-leaf text-white w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                            AgriPest Detect Pro
-                        </h1>
-                        <p class="text-xs text-gray-500 hidden sm:block">AI-Powered Pest Detection</p>
-                    </div>
+            body > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            ::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: transparent;
+                border-radius: 10px;
+                transition: background 0.3s ease;
+            }
+
+            body:hover::-webkit-scrollbar-thumb,
+            .modal-content:hover::-webkit-scrollbar-thumb,
+            .chat-messages:hover::-webkit-scrollbar-thumb,
+            .community-messages:hover::-webkit-scrollbar-thumb,
+            .search-results:hover::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+            }
+
+            * {
+                scrollbar-width: thin;
+                scrollbar-color: transparent transparent;
+            }
+
+            body:hover,
+            .modal-content:hover,
+            .chat-messages:hover,
+            .community-messages:hover,
+            .search-results:hover {
+                scrollbar-color: #ffd700 transparent;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                z-index: 1000;
+                border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+            }
+
+            .nav-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 1rem 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo-container {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                cursor: pointer;
+            }
+
+            .logo-image {
+                width: 45px;
+                height: 45px;
+                object-fit: contain;
+                border-radius: 8px;
+            }
+
+            .logo {
+                font-family: 'Source Serif 4', serif;
+                font-size: 1.5rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                letter-spacing: -1px;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 2rem;
+                list-style: none;
+                align-items: center;
+            }
+
+            .nav-links a {
+                color: rgba(255, 255, 255, 0.8);
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 0.9rem;
+                transition: all 0.3s;
+                position: relative;
+                padding: 0.5rem 0;
+                cursor: pointer;
+            }
+
+            .nav-links a:hover {
+                color: #ffd700;
+            }
+
+            .search-btn {
+                background: linear-gradient(135deg, #ffd900 0%, #ffa500 100%);
+                border: none;
+                padding: 0.7rem 1.5rem;
+                border-radius: 30px;
+                color: #020000;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-size: 0.9rem;
+            }
+
+            .search-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.8rem;
+                cursor: pointer;
+            }
+
+            .page {
+                display: none;
+                min-height: 100vh;
+                padding-top: 80px;
+            }
+
+            .page.active {
+                display: block;
+            }
+
+            .hero {
+                min-height: 100vh;
+                background: linear-gradient(
+                    135deg,
+                    #0a0a0a 0%,
+                    #1a1a1a 50%,
+                    #0a0a0a 100%
+                );
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                margin-top: -80px;
+                padding-top: 120px;
+            }
+
+            .hero::before {
+                content: "";
+                position: absolute;
+                width: 150%;
+                height: 150%;
+                background:
+                    radial-gradient(
+                        circle at 30% 50%,
+                        rgba(255, 215, 0, 0.15) 0%,
+                        transparent 50%
+                    ),
+                    radial-gradient(
+                        circle at 70% 70%,
+                        rgba(255, 165, 0, 0.1) 0%,
+                        transparent 50%
+                    );
+                animation: rotate 20s linear infinite;
+            }
+
+            @keyframes rotate {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .hero-content {
+                position: relative;
+                z-index: 1;
+                max-width: 1400px;
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: center;
+                padding: 2rem;
+            }
+
+            .hero-text {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .hero-badge {
+                display: inline-block;
+                padding: 0.6rem 1.3rem;
+                background: rgba(255, 215, 0, 0.1);
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                border-radius: 50px;
+                color: #ffd700;
+                font-size: 0.85rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+                margin-bottom: 1.5rem;
+                animation: pulse 2s ease-in-out infinite;
+                align-self: flex-start;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+                }
+                50% {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0);
+                }
+            }
+
+            .hero h1 {
+                font-family: 'Source Serif 4', serif;
+                font-size: clamp(2rem, 5vw, 4.5rem);
+                font-weight: 900;
+                color: white;
+                margin-bottom: 1.5rem;
+                letter-spacing: -2px;
+                line-height: 1.1;
+            }
+
+            .hero h1 .gradient-text {
+                background: linear-gradient(
+                    135deg,
+                    #ffd700 0%,
+                    #ffa500 50%,
+                    #ffd700 100%
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-size: 200% auto;
+                animation: shimmer 3s linear infinite;
+            }
+
+            @keyframes shimmer {
+                to {
+                    background-position: 200% center;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .hero p {
+                font-size: clamp(0.95rem, 2vw, 1.2rem);
+                color: rgba(255, 255, 255, 0.7);
+                margin-bottom: 2rem;
+                line-height: 1.8;
+            }
+
+            .hero-carousel-container {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .carousel-wrapper {
+                position: relative;
+                width: 100%;
+                max-width: 500px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .carousel-image-container {
+                position: relative;
+                width: 100%;
+                max-width: 400px;
+                aspect-ratio: 1;
+                margin-bottom: 2rem;
+            }
+
+            .carousel-image {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                opacity: 0.9;
+                transition: opacity 0.3s ease;
+                box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+                animation: carouselFadeIn 0.5s ease-out;
+            }
+
+            .carousel-image:hover {
+                opacity: 1;
+            }
+
+            @keyframes carouselFadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+                to {
+                    opacity: 0.9;
+                    transform: scale(1);
+                }
+            }
+
+            .carousel-caption {
+                text-align: center;
+                font-family: 'Source Serif 4', serif;
+                font-size: clamp(1.5rem, 3vw, 2.5rem);
+                font-weight: 600;
+                color: white;
+                margin-bottom: 1rem;
+                animation: captionSlideUp 0.5s ease-out 0.2s both;
+            }
+
+            .carousel-caption .highlight {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            @keyframes captionSlideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .carousel-indicator {
+                width: 66%;
+                height: 8px;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-radius: 4px;
+                margin-top: 1.5rem;
+                animation: indicatorGrow 0.5s ease-out 0.4s both;
+            }
+
+            @keyframes indicatorGrow {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px) scaleX(0);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scaleX(1);
+                }
+            }
+
+            .carousel-dots {
+                display: flex;
+                gap: 0.8rem;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .carousel-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgba(255, 215, 0, 0.3);
+                border: 2px solid rgba(255, 215, 0, 0.5);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .carousel-dot.active {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-color: #ffd700;
+                transform: scale(1.3);
+            }
+
+            .carousel-dot:hover {
+                background: rgba(255, 215, 0, 0.6);
+                transform: scale(1.2);
+            }
+
+            .cta-buttons {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .cta-button {
+                display: inline-block;
+                padding: 1.1rem 2.5rem;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                color: #0a0a0a;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 1rem;
+                border-radius: 50px;
+                transition: all 0.3s;
+                box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4);
+                cursor: pointer;
+                border: none;
+            }
+
+            .cta-button:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 60px rgba(255, 215, 0, 0.6);
+            }
+
+            .cta-button.secondary {
+                background: transparent;
+                border: 2px solid rgba(255, 215, 0, 0.5);
+                color: #ffd700;
+            }
+
+            .cta-button.secondary:hover {
+                background: rgba(255, 215, 0, 0.1);
+                border-color: #ffd700;
+            }
+
+            .stats-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 2rem;
+                padding: 4rem 2rem;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .stat-card {
+                text-align: center;
+                padding: 2rem;
+                background: black;
+                border-radius: 20px;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            .stat-card:hover {
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-5px);
+                border-color: #ffd700;
+            }
+
+            .stat-number {
+                font-size: clamp(1.8rem, 4vw, 3rem);
+                font-weight: 700;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .stat-label {
+                font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+                color: rgba(255, 255, 255, 0.7);
+                margin-top: 0.5rem;
+            }
+
+            .section {
+                padding: 4rem 2rem;
+                max-width: 1600px;
+                margin: 0 auto;
+                min-height: calc(100vh - 80px);
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 4rem;
+            }
+
+            .section-label {
+                color: #ffd700;
+                font-size: 0.9rem;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                margin-bottom: 1rem;
+            }
+
+            .section-title {
+                font-size: clamp(1.8rem, 4vw, 3.5rem);
+                font-weight: 900;
+                color: white;
+                margin-bottom: 1.5rem;
+                letter-spacing: -1px;
+            }
+
+            .section-description {
+                font-size: clamp(0.95rem, 2vw, 1.2rem);
+                color: rgba(255, 255, 255, 0.6);
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            .filter-section {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                margin-bottom: 3rem;
+                flex-wrap: wrap;
+            }
+
+            .filter-btn {
+                background: black;
+                border: 2px solid rgba(255, 215, 0, 0.2);
+                color: rgba(255, 255, 255, 0.8);
+                padding: 0.8rem 1.5rem;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: 600;
+                font-size: 0.9rem;
+            }
+
+            .filter-btn:hover {
+                border-color: #ffd700;
+                color: #ffd700;
+                background: rgba(255, 215, 0, 0.1);
+            }
+
+            .filter-btn.active {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-color: transparent;
+                color: #0a0a0a;
+            }
+
+            .category-filters {
+                display: flex;
+                gap: 0.8rem;
+                justify-content: center;
+                margin-bottom: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .category-btn {
+                background: black;
+                border: 2px solid rgba(255, 215, 0, 0.15);
+                color: rgba(255, 255, 255, 0.7);
+                padding: 0.6rem 1.2rem;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: 600;
+                font-size: 0.85rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .category-btn:hover {
+                border-color: #ffd700;
+                color: #ffd700;
+                background: rgba(255, 215, 0, 0.08);
+                transform: translateY(-2px);
+            }
+
+            .category-btn.active {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-color: transparent;
+                color: #0a0a0a;
+                box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            }
+
+            .provinces-grid {
+                display: grid;
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 280px), 1fr)
+                );
+                gap: 2rem;
+            }
+
+            .province-card {
+                background: black;
+                border-radius: 25px;
+                overflow: hidden;
+                cursor: pointer;
+                transition: all 0.4s;
+                border: 2px solid rgba(255, 215, 0, 0.2);
+                position: relative;
+            }
+
+            .province-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                border-color: #ffd700;
+                box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+            }
+
+            .province-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 215, 0, 0.2),
+                    rgba(255, 165, 0, 0.2)
+                );
+            }
+
+            .province-content {
+                padding: 1.5rem;
+            }
+
+            .province-name {
+                font-size: clamp(1.3rem, 2.5vw, 2rem);
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: #ffd700;
+            }
+
+            .province-desc {
+                color: rgba(255, 255, 255, 0.7);
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+
+            .province-count {
+                display: inline-block;
+                background: rgba(255, 215, 0, 0.2);
+                color: #ffd700;
+                padding: 0.5rem 1.2rem;
+                border-radius: 20px;
+                font-weight: 600;
+                font-size: 0.85rem;
+            }
+
+            .culinary-grid {
+                display: grid;
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 280px), 1fr)
+                );
+                gap: 2rem;
+            }
+
+            .culinary-card {
+                background: black;
+                border-radius: 25px;
+                overflow: hidden;
+                cursor: pointer;
+                transition: all 0.4s;
+                border: 2px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .culinary-card:hover {
+                transform: translateY(-10px);
+                border-color: #ffd700;
+                box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+            }
+
+            .culinary-thumbnail {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 215, 0, 0.2),
+                    rgba(255, 165, 0, 0.2)
+                );
+            }
+
+            .culinary-content {
+                padding: 1.5rem;
+            }
+
+            .culinary-name {
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: white;
+            }
+
+            .culinary-tags {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .tag {
+                background: rgba(255, 215, 0, 0.2);
+                color: #ffd700;
+                padding: 0.4rem 1rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .culinary-desc {
+                color: rgba(255, 255, 255, 0.7);
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+
+            .watch-tutorial {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                color: #0a0a0a;
+                border: none;
+                padding: 0.9rem 1.5rem;
+                border-radius: 30px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-size: 0.9rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .watch-tutorial:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            }
+
+            .back-btn {
+                background: black;
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                color: #ffd700;
+                padding: 0.9rem 1.8rem;
+                border-radius: 30px;
+                cursor: pointer;
+                font-weight: 700;
+                font-size: 1rem;
+                margin-bottom: 2rem;
+                transition: all 0.3s;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .back-btn:hover {
+                background: rgba(255, 215, 0, 0.2);
+                border-color: #ffd700;
+                transform: translateX(-5px);
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(10px);
+                z-index: 2000;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+
+            .modal.active {
+                display: flex;
+            }
+
+            .modal-content {
+                background: linear-gradient(
+                    135deg,
+                    rgba(26, 26, 26, 0.95),
+                    rgba(10, 10, 10, 0.95)
+                );
+                border-radius: 30px;
+                max-width: 900px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 2.5rem;
+                position: relative;
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                animation: modalSlideIn 0.5s ease;
+                scroll-behavior: smooth;
+            }
+
+            @keyframes modalSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            .close-modal {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                background: rgba(255, 215, 0, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #ffd700;
+                transition: all 0.3s;
+                border: none;
+            }
+
+            .close-modal:hover {
+                background: #ffd700;
+                color: #0a0a0a;
+                transform: rotate(90deg);
+            }
+
+            .modal-video {
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 20px;
+                margin: 2rem 0;
+                overflow: hidden;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .modal-video img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            .youtube-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 1rem 2rem;
+                background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+                color: white;
+                text-decoration: none;
+                border-radius: 30px;
+                font-weight: 700;
+                font-size: 1rem;
+                transition: all 0.3s;
+                margin: 1.5rem 0;
+            }
+
+            .youtube-link:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(255, 0, 0, 0.5);
+            }
+
+            .modal h2 {
+                font-size: clamp(1.5rem, 3vw, 2.5rem);
+                color: white;
+                margin-bottom: 1rem;
+            }
+
+            .recipe-section {
+                margin-top: 2rem;
+            }
+
+            .recipe-section h3 {
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
+                color: #ffd700;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .ingredients-grid {
+                display: grid;
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 180px), 1fr)
+                );
+                gap: 0.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .ingredient-item {
+                background: rgba(255, 255, 255, 0.05);
+                padding: 0.9rem 1.2rem;
+                border-radius: 12px;
+                border-left: 3px solid #ffd700;
+                color: rgba(255, 255, 255, 0.8);
+                transition: all 0.3s;
+                font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            }
+
+            .ingredient-item:hover {
+                background: rgba(255, 255, 255, 0.08);
+                transform: translateX(5px);
+            }
+
+            .steps-list {
+                counter-reset: step-counter;
+                list-style: none;
+            }
+
+            .step-item {
+                counter-increment: step-counter;
+                margin-bottom: 1.5rem;
+                padding-left: 3.5rem;
+                position: relative;
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.8;
+                font-size: clamp(0.9rem, 1.5vw, 1rem);
+            }
+
+            .step-item::before {
+                content: counter(step-counter);
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 35px;
+                height: 35px;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                color: #0a0a0a;
+            }
+
+            .search-modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(10px);
+                z-index: 3000;
+                padding-top: 80px;
+                overflow-y: auto;
+            }
+
+            .search-modal.active {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .search-container {
+                max-width: 700px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+            }
+
+            .search-input-wrapper {
+                position: relative;
+                margin-bottom: 2rem;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 1.2rem 3.5rem 1.2rem 1.5rem;
+                font-size: 1.1rem;
+                background: rgba(255, 255, 255, 0.95);
+                border: none;
+                border-radius: 50px;
+                color: #0a0a0a;
+                font-family: "Inter", sans-serif;
+                outline: none;
+                transition: all 0.3s;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .search-input:focus {
+                box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+            }
+
+            .search-input::placeholder {
+                color: rgba(10, 10, 10, 0.5);
+            }
+
+            .search-icon {
+                position: absolute;
+                right: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.3rem;
+                color: #ffd700;
+                pointer-events: none;
+            }
+
+            .search-close-icon {
+                position: absolute;
+                right: 3.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.2rem;
+                color: rgba(10, 10, 10, 0.4);
+                cursor: pointer;
+                display: none;
+                padding: 0.5rem;
+            }
+
+            .search-close-icon:hover {
+                color: #ffd700;
+            }
+
+            .search-results {
+                margin-top: 1rem;
+                max-height: calc(100vh - 300px);
+                overflow-y: auto;
+                padding-right: 0.5rem;
+            }
+
+            .search-result-item {
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.08) 0%,
+                    rgba(255, 255, 255, 0.05) 100%
+                );
+                padding: 1.5rem;
+                border-radius: 18px;
+                margin-bottom: 1rem;
+                cursor: pointer;
+                transition: all 0.3s;
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .search-result-item::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                transform: scaleY(0);
+                transition: transform 0.3s;
+            }
+
+            .search-result-item:hover::before {
+                transform: scaleY(1);
+            }
+
+            .search-result-item:hover {
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 215, 0, 0.12) 0%,
+                    rgba(255, 165, 0, 0.08) 100%
+                );
+                transform: translateX(8px);
+                border-color: #ffd700;
+                box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+            }
+
+            .search-result-item strong {
+                color: #ffd700;
+                font-size: 1.15rem;
+                font-weight: 700;
+                display: block;
+                margin-bottom: 0.4rem;
+            }
+
+            .search-result-item small {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.9rem;
+            }
+
+            .ai-chat-container {
+                max-width: 1000px;
+                margin: 0 auto;
+                background: black;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .chat-header {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+            .chat-header h3 {
+                color: #0a0a0a;
+                font-size: clamp(1.2rem, 2vw, 1.8rem);
+                font-weight: 800;
+                margin-bottom: 0.5rem;
+            }
+
+            .chat-header p {
+                color: rgba(10, 10, 10, 0.8);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+
+            .chat-messages {
+                height: 450px;
+                overflow-y: auto;
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            .message {
+                margin-bottom: 1.5rem;
+                display: flex;
+                gap: 1rem;
+                animation: messageSlide 0.3s ease-out;
+            }
+
+            @keyframes messageSlide {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .message.user {
+                flex-direction: row-reverse;
+            }
+
+            .message-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                font-weight: 800;
+                flex-shrink: 0;
+            }
+
+            .message.ai .message-avatar {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                color: #0a0a0a;
+            }
+
+            .message.user .message-avatar {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+
+            .message-content {
+                max-width: 75%;
+                padding: 1rem 1.3rem;
+                border-radius: 15px;
+                line-height: 1.6;
+                font-size: clamp(0.9rem, 1.5vw, 1rem);
+            }
+
+            .message.ai .message-content {
+                background: rgba(255, 215, 0, 0.1);
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                color: white;
+            }
+
+            .message.user .message-content {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .chat-input-container {
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.4);
+                border-top: 1px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .chat-input-wrapper {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .chat-input {
+                flex: 1;
+                min-width: 200px;
+                padding: 1rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 2px solid rgba(255, 215, 0, 0.2);
+                border-radius: 12px;
+                color: white;
+                font-size: 1rem;
+                font-family: inherit;
+                resize: none;
+            }
+
+            .chat-input:focus {
+                outline: none;
+                border-color: #ffd700;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .chat-input::placeholder {
+                color: rgba(255, 255, 255, 0.4);
+            }
+
+            .send-btn {
+                padding: 1rem 2rem;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                color: #0a0a0a;
+                border: none;
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all 0.3s;
+                white-space: nowrap;
+            }
+
+            .send-btn:hover:not(:disabled) {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            }
+
+            .send-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .community-container {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .province-selector {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+                scroll-behavior: smooth;
+            }
+
+            .province-tab {
+                padding: 1rem 1.5rem;
+                background:black;
+                border: 2px solid rgba(255, 215, 0, 0.2);
+                border-radius: 12px;
+                color: rgba(255, 255, 255, 0.8);
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                white-space: nowrap;
+                font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            }
+
+            .province-tab:hover {
+                background: rgba(255, 215, 0, 0.1);
+                border-color: #ffd700;
+                color: #ffd700;
+            }
+
+            .province-tab.active {
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                border-color: transparent;
+                color: #0a0a0a;
+            }
+
+            .community-chat {
+                background: black;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .community-messages {
+                height: 500px;
+                overflow-y: auto;
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            .community-message {
+                margin-bottom: 1.5rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 215, 0, 0.1);
+                border-radius: 15px;
+                padding: 1.2rem;
+                animation: messageSlide 0.3s ease-out;
+            }
+
+            .message-header {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 800;
+                color: #0a0a0a;
+                flex-shrink: 0;
+            }
+
+            .user-info {
+                flex: 1;
+            }
+
+            .user-name {
+                color: #ffd700;
+                font-weight: 700;
+                font-size: clamp(0.9rem, 1.5vw, 1rem);
+            }
+
+            .message-time {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+            }
+
+            .message-text {
+                color: rgba(255, 255, 255, 0.9);
+                line-height: 1.6;
+                margin-bottom: 0.8rem;
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+
+            .message-attachment {
+                margin-top: 1rem;
+                padding: 1rem;
+                background: rgba(255, 215, 0, 0.05);
+                border: 1px solid rgba(255, 215, 0, 0.15);
+                border-radius: 10px;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.8rem;
+                color: #ffd700;
+                text-decoration: none;
+                transition: all 0.3s;
+                font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+            }
+
+            .message-attachment:hover {
+                background: rgba(255, 215, 0, 0.1);
+                border-color: #ffd700;
+            }
+
+            .community-input-container {
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.4);
+                border-top: 1px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .input-toolbar {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .toolbar-btn {
+                padding: 0.8rem 1.2rem;
+                background: rgba(255, 215, 0, 0.1);
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 10px;
+                color: #ffffff;
+                font-size: 1.2rem;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .toolbar-btn:hover {
+                background: rgba(255, 215, 0, 0.2);
+                border-color: #ffd700;
+                transform: scale(1.1);
+            }
+
+            .community-input-wrapper {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .community-input {
+                flex: 1;
+                min-width: 200px;
+                padding: 1rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 2px solid rgba(255, 215, 0, 0.2);
+                border-radius: 12px;
+                color: white;
+                font-size: 1rem;
+                font-family: inherit;
+            }
+
+            .community-input:focus {
+                outline: none;
+                border-color: #ffd700;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .team-grid {
+                max-width: 1200px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 200px), 1fr)
+                );
+                gap: 2rem;
+            }
+
+            .team-member {
+                background: black;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 20px;
+                padding: 2rem 1.5rem;
+                text-align: center;
+                transition: all 0.4s;
+            }
+
+            .team-member:hover {
+                transform: translateY(-15px);
+                box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+                border-color: #ffd700;
+            }
+
+            .team-avatar {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                margin: 0 auto 1.5rem;
+                object-fit: cover;
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+                transition: transform 0.4s;
+                border: 3px solid #ffd700;
+            }
+
+            .team-member:hover .team-avatar {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            .team-member h3 {
+                color: white;
+                font-size: clamp(1rem, 2vw, 1.3rem);
+                font-weight: 700;
+                margin-bottom: 0.8rem;
+            }
+
+            .team-member p {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+            
+
+            footer {
+                background: #050505;
+                color: white;
+                padding: 4rem 2rem 2rem;
+                border-top: 1px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .footer-content {
+                max-width: 1400px;
+                margin: 0 auto 3rem;
+                display: grid;
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 200px), 1fr)
+                );
+                gap: 2.5rem;
+            }
+
+            .footer-section h3 {
+                color: #ffd700;
+                font-size: clamp(1rem, 2vw, 1.3rem);
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+            }
+
+            .footer-section p,
+            .footer-section a {
+                color: rgba(255, 255, 255, 0.7);
+                line-height: 1.9;
+                text-decoration: none;
+                display: block;
+                padding: 0.3rem 0;
+                transition: color 0.3s;
+                font-size: clamp(0.85rem, 1.5vw, 1rem);
+            }
+
+            .footer-section a:hover {
+                color: #ffd700;
+            }
+
+            .footer-bottom {
+                text-align: center;
+                padding-top: 2rem;
+                border-top: 1px solid rgba(255, 215, 0, 0.1);
+                color: rgba(255, 255, 255, 0.5);
+                font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+            }
+
+            /* RESPONSIVE BREAKPOINTS */
+            @media (max-width: 1024px) {
+                .hero-content {
+                    gap: 3rem;
+                }
+
+                .carousel-image-container {
+                    max-width: 350px;
+                }
+
+                .stats-section {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                }
+            }
+
+            @media (max-width: 968px) {
+                .nav-container {
+                    padding: 1rem;
+                }
+
+                .nav-links {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: rgba(10, 10, 10, 0.98);
+                    flex-direction: column;
+                    gap: 0;
+                    padding: 1rem;
+                    border-top: 1px solid rgba(255, 215, 0, 0.2);
+                }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links li {
+                    padding: 1rem 0;
+                    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+                    width: 100%;
+                }
+
+                .nav-links a {
+                    display: block;
+                    width: 100%;
+                }
+
+                .menu-toggle {
+                    display: block;
+                }
+
+                .section {
+                    padding: 3rem 1.5rem;
+                }
+
+                .hero {
+                    padding: 2rem 1rem;
+                    padding-top: 100px;
+                }
+
+                .hero-content {
+                    grid-template-columns: 1fr;
+                    gap: 2.5rem;
+                    padding: 1rem;
+                }
+
+                .carousel-image-container {
+                    max-width: 280px;
+                }
+
+                .provinces-grid,
+                .culinary-grid {
+                    gap: 1.5rem;
+                }
+
+                .modal-content {
+                    padding: 2rem 1.5rem;
+                }
+
+                .step-item {
+                    padding-left: 3rem;
+                }
+
+                .step-item::before {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 0.9rem;
+                }
+
+                .chat-messages,
+                .community-messages {
+                    height: 350px;
+                }
+
+                .team-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            @media (max-width: 640px) {
+                .logo {
+                    font-size: 1.2rem;
+                }
+
+                .logo-image {
+                    width: 35px;
+                    height: 35px;
+                }
+
+                .section {
+                    padding: 2.5rem 1rem;
+                }
+
+                .hero {
+                    padding: 1.5rem 0.5rem;
+                    padding-top: 90px;
+                }
+
+                .hero-content {
+                    gap: 2rem;
+                    padding: 0.5rem;
+                }
+
+                .hero-badge {
+                    font-size: 0.7rem;
+                    padding: 0.5rem 1rem;
+                    letter-spacing: 0.5px;
+                }
+
+                .carousel-image-container {
+                    max-width: 240px;
+                }
+
+                .stats-section {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
+                    padding: 2.5rem 1rem;
+                }
+
+                .stat-card {
+                    padding: 1.5rem 1rem;
+                }
+
+                .culinary-thumbnail,
+                .province-image {
+                    height: 180px;
+                }
+
+                .culinary-content,
+                .province-content {
+                    padding: 1.2rem;
+                }
+
+                .modal-content {
+                    padding: 1.5rem 1rem;
+                    max-height: 85vh;
+                    border-radius: 20px;
+                }
+
+                .ingredients-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .close-modal {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1.3rem;
+                    top: 1rem;
+                    right: 1rem;
+                }
+
+                .chat-messages,
+                .community-messages {
+                    height: 300px;
+                    padding: 1rem;
+                }
+
+                .message-content {
+                    max-width: 85%;
+                    padding: 0.9rem 1.1rem;
+                }
+
+                .team-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+
+                .team-avatar {
+                    width: 80px;
+                    height: 80px;
+                    font-size: 1.6rem;
+                }
+
+                .cta-buttons {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .cta-button {
+                    width: 100%;
+                    text-align: center;
+                    padding: 1rem 2rem;
+                }
+
+                .filter-section {
+                    gap: 0.8rem;
+                }
+
+                .filter-btn {
+                    padding: 0.7rem 1.2rem;
+                    font-size: 0.85rem;
+                }
+
+                .search-container {
+                    padding: 1.5rem 1rem;
+                }
+
+                .search-input {
+                    padding: 1rem 3rem 1rem 1.2rem;
+                    font-size: 1rem;
+                }
+
+                .toolbar-btn {
+                    padding: 0.7rem 1rem;
+                    font-size: 1rem;
+                }
+
+                .youtube-link {
+                    padding: 0.9rem 1.5rem;
+                    font-size: 0.9rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .hero h1 {
+                    font-size: 1.8rem;
+                }
+
+                .carousel-image-container {
+                    max-width: 200px;
+                }
+
+                .carousel-caption {
+                    font-size: 1.3rem;
+                }
+
+                .stats-section {
+                    padding: 2rem 0.5rem;
+                }
+
+                .section-title {
+                    font-size: 1.6rem;
+                }
+
+                .modal-content {
+                    padding: 1.2rem 0.8rem;
+                }
+
+                .step-item {
+                    padding-left: 2.5rem;
+                    font-size: 0.85rem;
+                }
+
+                .step-item::before {
+                    width: 26px;
+                    height: 26px;
+                    font-size: 0.8rem;
+                }
+
+                .chat-input-wrapper,
+                .community-input-wrapper {
+                    flex-direction: column;
+                }
+
+                .send-btn {
+                    width: 100%;
+                    padding: 1rem;
+                }
+
+                .team-member {
+                    padding: 1.5rem 1rem;
+                }
+            }
+
+            @media (max-width: 375px) {
+                .logo {
+                    font-size: 1rem;
+                }
+
+                .logo-image {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                .carousel-image-container {
+                    max-width: 180px;
+                }
+
+                .hero-badge {
+                    font-size: 0.65rem;
+                    padding: 0.4rem 0.8rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-container">
+                <div class="logo-container" onclick="showPage('home')">
+                    <img
+                        src="logoo.png"
+                        alt="Logo Cakranesia"
+                        class="logo-image"
+                        onerror="this.style.display='none'"
+                    />
+                    <div class="logo">CAKRANESIA</div>
                 </div>
-
-                <nav class="hidden md:flex items-center space-x-1">
-                    <button onclick="navigate('home')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Beranda
-                    </button>
-                    <button onclick="navigate('scanner')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Scan Hama
-                    </button>
-                    <button onclick="navigate('map')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Peta Hama
-                    </button>
-                    <button onclick="navigate('prediction')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Prediksi
-                    </button>
-                    <button onclick="navigate('community')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Komunitas
-                    </button>
-                    <button onclick="navigate('marketplace')" class="px-4 py-2 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50 hover:text-green-600">
-                        Marketplace
-                    </button>
-                </nav>
-
-                <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars w-6 h-6"></i>
-                </button>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul class="nav-links" id="navMenu">
+                    <li><button class="search-btn" onclick="openSearch()">Cari</button></li>
+                    <li><a onclick="showPage('home')">Beranda</a></li>
+                    <li><a onclick="showPage('provinces')">Provinsi</a></li>
+                    <li><a onclick="showPage('ai')">Rekomendasi AI</a></li>
+                    <li><a onclick="showPage('community')">Komunitas</a></li>
+                    <li><a onclick="showPage('team')">Tim</a></li>
+                </ul>
             </div>
-        </div>
+        </nav>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <nav class="px-4 py-2 space-y-1">
-                <button onclick="navigate('home')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Beranda
-                </button>
-                <button onclick="navigate('scanner')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Scan Hama
-                </button>
-                <button onclick="navigate('map')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Peta Hama
-                </button>
-                <button onclick="navigate('prediction')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Prediksi
-                </button>
-                <button onclick="navigate('community')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Komunitas
-                </button>
-                <button onclick="navigate('marketplace')" class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 font-medium text-gray-700 hover:bg-green-50">
-                    Marketplace
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <main class="pb-16">
-        <!-- Hero Section -->
-        <section id="home-section" class="relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-8">
-                        <div class="inline-flex items-center px-4 py-2 bg-green-100 rounded-full">
-                            <i class="fas fa-shield-alt text-green-600 mr-2"></i>
-                            <span class="text-sm font-semibold text-green-700">AI-Powered Technology</span>
+        <div id="home" class="page active">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            Cita Rasa Kuliner dan Ragam Adiluhung Sinergi Nusantara - BudayaGO! 2025
                         </div>
-
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                            Lindungi Tanaman Anda dengan
-                            <span class="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent block">
-                                Deteksi AI
-                            </span>
+                        <h1>
+                            <span class="gradient-text">Jelajahi Cita Rasa</span><br />Nusantara
                         </h1>
-
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            AgriPest Detect Pro menggunakan teknologi AI canggih untuk mendeteksi hama secara real-time,
-                            memprediksi serangan, dan memberikan solusi ramah lingkungan untuk meningkatkan hasil panen Anda.
+                        <p>
+                            Temukan kekayaan kuliner tradisional Indonesia dari 38
+                            provinsi melalui platform digital interaktif. Preservasi
+                            warisan budaya melalui teknologi.
                         </p>
-
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <button onclick="navigate('scanner')" class="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                                Mulai Scan Sekarang
+                        <div class="cta-buttons">
+                            <button
+                                class="cta-button"
+                                onclick="showPage('provinces')"
+                            >
+                                Mulai Jelajah
                             </button>
-                            <button class="px-8 py-4 bg-white text-gray-700 font-semibold rounded-xl shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-green-500 transition-all duration-200">
-                                Lihat Demo
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-6 pt-8">
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-green-600">99%</div>
-                                <div class="text-sm text-gray-600 mt-1">Akurasi AI</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-green-600">50K+</div>
-                                <div class="text-sm text-gray-600 mt-1">Petani Aktif</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-green-600">24/7</div>
-                                <div class="text-sm text-gray-600 mt-1">Support AI</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative">
-                        <div class="relative z-10 bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-all duration-300">
-                            <div class="aspect-square bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-camera text-green-500 text-8xl"></i>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div class="flex items-center space-x-3 bg-green-50 p-4 rounded-lg">
-                                    <i class="fas fa-camera text-green-600"></i>
-                                    <span class="font-medium text-gray-700">Real-time Detection</span>
-                                </div>
-                                <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-lg">
-                                    <i class="fas fa-chart-line text-blue-600"></i>
-                                    <span class="font-medium text-gray-700">AI Prediction</span>
-                                </div>
-                                <div class="flex items-center space-x-3 bg-purple-50 p-4 rounded-lg">
-                                    <i class="fas fa-map-marker-alt text-purple-600"></i>
-                                    <span class="font-medium text-gray-700">Pest Mapping</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="absolute -top-4 -right-4 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                        <div class="absolute -bottom-4 -left-4 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features-section" class="py-16 sm:py-24">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-4">
-                        Fitur Lengkap untuk
-                        <span class="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                            Pertanian Modern
-                        </span>
-                    </h2>
-                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Teknologi AI terdepan untuk membantu petani meningkatkan produktivitas dan mengurangi kerugian
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Feature items would go here -->
-                    <div onclick="navigate('scanner')" class="group cursor-pointer bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-green-200">
-                        <div class="bg-green-50 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
-                                <i class="fas fa-camera text-white w-6 h-6"></i>
-                            </div>
-                        </div>
-                        <h3 class="font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                            Scan Hama Real-Time
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Deteksi hama langsung melalui kamera dengan AI detection</p>
-                    </div>
-
-                    <div onclick="navigate('map')" class="group cursor-pointer bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-green-200">
-                        <div class="bg-blue-50 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <div class="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-lg">
-                                <i class="fas fa-map-marker-alt text-white w-6 h-6"></i>
-                            </div>
-                        </div>
-                        <h3 class="font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                            Peta Persebaran Hama
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Monitoring persebaran hama berdasarkan geolocation</p>
-                    </div>
-
-                    <div onclick="navigate('prediction')" class="group cursor-pointer bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-green-200">
-                        <div class="bg-purple-50 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <div class="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-lg">
-                                <i class="fas fa-chart-line text-white w-6 h-6"></i>
-                            </div>
-                        </div>
-                        <h3 class="font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                            Prediksi Serangan
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">AI memprediksi serangan hama berdasarkan cuaca & pola</p>
-                    </div>
-
-                    <div onclick="navigate('assistant')" class="group cursor-pointer bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-green-200">
-                        <div class="bg-lime-50 w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <div class="bg-gradient-to-br from-lime-500 to-green-600 p-2 rounded-lg">
-                                <i class="fas fa-leaf text-white w-6 h-6"></i>
-                            </div>
-                        </div>
-                        <h3 class="font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                            Rekomendasi Organik
-                        </h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Saran pestisida organik & DIY yang aman lingkungan</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Scanner Section -->
-        <section id="scanner-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Scan Hama Real-Time</h1>
-                    <p class="text-gray-600">Deteksi hama pada tanaman Anda menggunakan teknologi AI</p>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-camera text-white w-8 h-8"></i>
-                            <div>
-                                <h2 class="text-xl font-bold text-white">AI Detection System</h2>
-                                <p class="text-green-100 text-sm">Powered by Deep Learning</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 sm:p-8">
-                        <div class="aspect-video bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
-                            <div class="text-center">
-                                <i class="fas fa-camera text-gray-600 text-6xl mb-4 mx-auto"></i>
-                                <p class="text-gray-400">Kamera siap digunakan</p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button onclick="startScan()" class="flex items-center justify-center space-x-2 px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-                                <i class="fas fa-camera w-5 h-5"></i>
-                                <span>Mulai Scan</span>
-                            </button>
-                            <button class="flex items-center justify-center space-x-2 px-6 py-4 bg-white text-gray-700 font-semibold rounded-xl shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-green-500 transition-all duration-200">
-                                <i class="fas fa-upload w-5 h-5"></i>
-                                <span>Upload Foto</span>
+                            <button
+                                class="cta-button secondary"
+                                onclick="openSearch()"
+                            >
+                                Cari Kuliner
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Pest Map Section -->
-        <section id="map-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Peta Persebaran Hama</h1>
-                    <p class="text-gray-600">Monitoring real-time serangan hama di berbagai wilayah</p>
-                </div>
-
-                <div class="grid lg:grid-cols-3 gap-6 mb-6">
-                    <div class="bg-gradient-to-br from-red-500 to-orange-500 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-exclamation-triangle w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">12</div>
-                        <div class="text-red-100">Area Tingkat Tinggi</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-yellow-500 to-amber-500 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-chart-line w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">28</div>
-                        <div class="text-yellow-100">Area Tingkat Sedang</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-users w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">2,450</div>
-                        <div class="text-blue-100">Petani Terdampak</div>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-500 to-cyan-600 p-6">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-map-marker-alt w-6 h-6 text-white"></i>
-                                <h2 class="text-xl font-bold text-white">Peta Interaktif</h2>
+                    <div class="hero-carousel-container">
+                        <div class="carousel-wrapper">
+                            <div class="carousel-image-container">
+                                <img 
+                                    id="carouselImage" 
+                                    src="gudeg.jpg" 
+                                    alt="Gudeg" 
+                                    class="carousel-image"
+                                    onerror="this.src='https://via.placeholder.com/400x400?text=Kuliner+Nusantara'"
+                                />
                             </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="aspect-square bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl flex items-center justify-center relative overflow-hidden">
-                                <div class="relative z-10">
-                                    <i class="fas fa-map-marker-alt w-24 h-24 text-blue-400"></i>
-                                    <p class="text-center text-gray-600 mt-4 font-medium">Peta Wilayah Indonesia</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="bg-white rounded-2xl shadow-xl p-6">
-                            <h3 class="font-bold text-xl mb-4 flex items-center space-x-2">
-                                <i class="fas fa-exclamation-triangle w-6 h-6 text-red-500"></i>
-                                <span>Laporan Terkini</span>
-                            </h3>
-                            <div class="space-y-3">
-                                <div class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all duration-200 cursor-pointer">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div class="flex-1">
-                                            <div class="flex items-center space-x-2 mb-1">
-                                                <i class="fas fa-map-marker-alt w-4 h-4 text-gray-500"></i>
-                                                <span class="font-semibold text-gray-800">Bandung, Jawa Barat</span>
-                                            </div>
-                                            <p class="text-sm text-gray-600 mb-2">Ulat Grayak</p>
-                                        </div>
-                                        <span class="px-3 py-1 bg-red-500 rounded-full text-xs font-semibold text-white">
-                                            Tinggi
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                        <div class="flex items-center space-x-1">
-                                            <i class="fas fa-users w-4 h-4"></i>
-                                            <span>23 petani terdampak</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl">
-                            <h3 class="font-bold text-lg mb-3">Zona Aman</h3>
-                            <p class="text-green-100 mb-4">Area Anda saat ini dalam kondisi aman dari serangan hama berat</p>
-                            <button class="px-4 py-2 bg-white text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors">
-                                Aktifkan Notifikasi
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Prediction Section -->
-        <section id="prediction-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Prediksi Serangan Hama</h1>
-                    <p class="text-gray-600">AI memprediksi potensi serangan berdasarkan cuaca dan pola historis</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <div class="p-3 bg-blue-100 rounded-lg">
-                                <i class="fas fa-cloud w-6 h-6 text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">Cuaca Hari Ini</p>
-                                <p class="text-xl font-bold text-gray-800">Cerah Berawan</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-xs text-gray-500">Suhu</p>
-                                <p class="text-lg font-semibold text-gray-700">28°C</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Kelembaban</p>
-                                <p class="text-lg font-semibold text-gray-700">75%</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg p-6 text-white">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <i class="fas fa-check-circle w-8 h-8"></i>
-                            <div>
-                                <p class="text-sm text-green-100">Risiko Hari Ini</p>
-                                <p class="text-2xl font-bold">Rendah</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-green-100">Kondisi cuaca mendukung untuk pertumbuhan tanaman</p>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <i class="fas fa-exclamation-triangle w-8 h-8"></i>
-                            <div>
-                                <p class="text-sm text-orange-100">Peringatan 3 Hari</p>
-                                <p class="text-2xl font-bold">Tinggi</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-orange-100">Potensi serangan ulat grayak meningkat</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <i class="fas fa-chart-line w-6 h-6 text-green-600"></i>
-                        <h2 class="text-2xl font-bold text-gray-800">Prediksi 7 Hari Kedepan</h2>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div class="flex items-center space-x-4 flex-1">
-                                    <div class="w-20">
-                                        <p class="font-semibold text-gray-800">Senin</p>
-                                        <p class="text-xs text-gray-500">Cerah</p>
-                                    </div>
-
-                                    <div class="flex items-center space-x-2 text-sm text-gray-600">
-                                        <i class="fas fa-cloud w-4 h-4"></i>
-                                        <span>28°C</span>
-                                    </div>
-                                </div>
-
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm font-medium text-gray-700">Risiko Serangan</span>
-                                        <span class="px-3 py-1 bg-green-500 rounded-full text-xs font-semibold text-white">
-                                            Rendah
-                                        </span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="h-2.5 rounded-full bg-green-500 transition-all duration-500" style="width: 25%"></div>
-                                    </div>
-                                </div>
+                            <h2 class="carousel-caption">
+                                <span class="highlight" id="carouselHighlight">Gudeg</span>
+                                <span id="carouselText"> khas Yogyakarta</span>
+                            </h2>
+                            <div class="carousel-indicator"></div>
+                            <div class="carousel-dots">
+                                <div class="carousel-dot active" onclick="changeCarouselSlide(0)"></div>
+                                <div class="carousel-dot" onclick="changeCarouselSlide(1)"></div>
+                                <div class="carousel-dot" onclick="changeCarouselSlide(2)"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- AI Assistant Section -->
-        <section id="assistant-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Asisten Virtual AI</h1>
-                    <p class="text-gray-600">Konsultasi pertanian 24/7 dengan chatbot cerdas kami</p>
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-number">38</div>
+                    <div class="stat-label">Provinsi</div>
                 </div>
-
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col h-[600px]">
-                    <div class="bg-gradient-to-r from-blue-500 to-cyan-600 p-6">
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-white/20 p-2 rounded-lg">
-                                <i class="fas fa-robot text-white w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-bold text-white">AgriPest AI Assistant</h2>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                    <p class="text-blue-100 text-sm">Online</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
-                        <div class="flex items-start space-x-3">
-                            <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-600">
-                                <i class="fas fa-robot text-white w-6 h-6"></i>
-                            </div>
-                            <div class="flex-1 max-w-[70%] items-start">
-                                <div class="rounded-2xl p-4 shadow-md bg-white text-gray-800">
-                                    <p class="text-sm leading-relaxed whitespace-pre-line">Halo! Saya Asisten Virtual AgriPest. Saya siap membantu Anda dengan pertanyaan seputar hama, penyakit tanaman, dan solusi pertanian. Apa yang bisa saya bantu hari ini?</p>
-                                </div>
-                                <p class="text-xs text-gray-500 mt-1 px-2">10:30</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-gray-200 bg-white p-4">
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <button onclick="sendMessage('Bagaimana cara mengatasi ulat grayak?')" class="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors">
-                                Bagaimana cara mengatasi ulat grayak?
-                            </button>
-                            <button onclick="sendMessage('Pestisida organik apa yang aman?')" class="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors">
-                                Pestisida organik apa yang aman?
-                            </button>
-                            <button onclick="sendMessage('Cara meningkatkan kualitas tanah?')" class="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors">
-                                Cara meningkatkan kualitas tanah?
-                            </button>
-                            <button onclick="sendMessage('Kapan waktu terbaik penyemprotan?')" class="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors">
-                                Kapan waktu terbaik penyemprotan?
-                            </button>
-                        </div>
-
-                        <div class="flex space-x-3">
-                            <input type="text" id="chat-input" placeholder="Ketik pertanyaan Anda..." class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors">
-                            <button onclick="sendUserMessage()" class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200">
-                                <i class="fas fa-paper-plane w-5 h-5"></i>
-                            </button>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number">200+</div>
+                    <div class="stat-label">Kuliner Tradisional</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Community Section -->
-        <section id="community-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Komunitas Petani</h1>
-                    <p class="text-gray-600">Berbagi pengalaman dan solusi dengan ribuan petani lainnya</p>
+                <div class="stat-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Resep Lengkap</div>
                 </div>
-
-                <div class="grid lg:grid-cols-3 gap-6 mb-6">
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-users w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">52,480</div>
-                        <div class="text-green-100">Anggota Aktif</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-comment w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">12,350</div>
-                        <div class="text-blue-100">Diskusi</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-thumbs-up w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">98%</div>
-                        <div class="text-purple-100">Tingkat Kepuasan</div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1 relative">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                            <input type="text" placeholder="Cari diskusi, hama, atau solusi..." class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors">
-                        </div>
-                        <button class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg flex items-center justify-center space-x-2 transform hover:scale-105 transition-all">
-                            <i class="fas fa-camera w-5 h-5"></i>
-                            <span>Buat Postingan</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-4">
-                        <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                        P
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-gray-800">Pak Budi</h3>
-                                        <p class="text-sm text-gray-500">Bandung, Jawa Barat</p>
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                                    Ulat Grayak
-                                </span>
-                            </div>
-
-                            <p class="text-gray-700 leading-relaxed mb-4">Berhasil mengatasi ulat grayak dengan ekstrak daun mimba! Hasilnya sangat efektif dalam 3 hari. Terima kasih AgriPest untuk rekomendasinya.</p>
-
-                            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                <div class="flex items-center space-x-4">
-                                    <button class="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors">
-                                        <i class="fas fa-thumbs-up w-5 h-5"></i>
-                                        <span class="text-sm font-medium">24</span>
-                                    </button>
-                                    <button class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors">
-                                        <i class="fas fa-comment w-5 h-5"></i>
-                                        <span class="text-sm font-medium">8</span>
-                                    </button>
-                                </div>
-                                <span class="text-xs text-gray-400">2 jam yang lalu</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div class="bg-white rounded-xl shadow-md p-6">
-                            <h3 class="font-bold text-lg mb-4">Topik Populer</h3>
-                            <div class="space-y-3">
-                                <button class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-green-50 rounded-lg transition-colors">
-                                    <div class="flex items-center justify-between">
-                                        <span class="font-medium text-gray-700">Ulat Grayak</span>
-                                        <span class="text-xs text-gray-500">342 diskusi</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl shadow-lg p-6 text-white">
-                            <i class="fas fa-comment w-8 h-8 mb-3 opacity-80"></i>
-                            <h3 class="font-bold text-lg mb-2">Butuh Bantuan?</h3>
-                            <p class="text-blue-100 text-sm mb-4">
-                                Tim ahli kami siap membantu menjawab pertanyaan Anda
-                            </p>
-                            <button class="w-full px-4 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
-                                Hubungi Ahli
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Marketplace Section -->
-        <section id="marketplace-section" class="hidden py-12 min-h-screen">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8">
-                    <button onclick="navigate('home')" class="text-green-600 hover:text-green-700 font-medium mb-4">
-                        ← Kembali
-                    </button>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-3">Marketplace Pertanian</h1>
-                    <p class="text-gray-600">Belanja kebutuhan pertanian dengan harga terjangkau</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-shopping-cart w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">500+</div>
-                        <div class="text-green-100">Produk Tersedia</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-star w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">4.8/5</div>
-                        <div class="text-blue-100">Rating Toko</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
-                        <i class="fas fa-shopping-cart w-8 h-8 mb-3 opacity-80"></i>
-                        <div class="text-3xl font-bold mb-1">15K+</div>
-                        <div class="text-orange-100">Transaksi Sukses</div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1 relative">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-                            <input type="text" placeholder="Cari produk, pestisida, pupuk..." class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors">
-                        </div>
-                        <button class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2">
-                            <i class="fas fa-filter w-5 h-5"></i>
-                            <span>Filter</span>
-                        </button>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <button class="px-4 py-2 bg-green-500 text-white rounded-lg transition-all">
-                            Semua
-                        </button>
-                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-all">
-                            Pestisida
-                        </button>
-                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-all">
-                            Pupuk
-                        </button>
-                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-all">
-                            Alat
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                        <div class="aspect-square bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-300">
-                            🌿
-                        </div>
-
-                        <div class="p-6">
-                            <div class="flex items-start justify-between mb-2">
-                                <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                                    Pestisida
-                                </span>
-                                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                                    Tersedia
-                                </span>
-                            </div>
-
-                            <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2">Pestisida Organik Mimba</h3>
-
-                            <div class="flex items-center space-x-2 mb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-star text-yellow-500 w-4 h-4"></i>
-                                    <span class="text-sm font-semibold text-gray-700 ml-1">4.8</span>
-                                </div>
-                                <span class="text-sm text-gray-500">(234 ulasan)</span>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-2xl font-bold text-green-600">Rp85.000</p>
-                                    <p class="text-xs text-gray-500">Per unit</p>
-                                </div>
-                                <button class="p-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all">
-                                    <i class="fas fa-shopping-cart w-5 h-5"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-xl">
-                            <i class="fas fa-leaf text-white w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">AgriPest Detect Pro</h3>
-                    </div>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Solusi AI terdepan untuk deteksi hama dan manajemen pertanian modern.
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Fitur Utama</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Scan Hama Real-Time</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Peta Persebaran</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Prediksi AI</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Komunitas Petani</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Bantuan</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Pusat Bantuan</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Tutorial</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">FAQ</li>
-                        <li class="hover:text-green-400 cursor-pointer transition-colors">Hubungi Kami</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lg mb-4">Kontak</h4>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-envelope w-4 h-4"></i>
-                            <span>support@agripest.co.id</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-phone w-4 h-4"></i>
-                            <span>+62 812-3456-7890</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-map-marker-alt w-4 h-4"></i>
-                            <span>Jakarta, Indonesia</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                        © 2024 AgriPest Detect Pro. All rights reserved.
-                    </p>
-                    <div class="flex space-x-6 text-sm text-gray-400">
-                        <a href="#" class="hover:text-green-400 transition-colors">
-                            Kebijakan Privasi
-                        </a>
-                        <a href="#" class="hover:text-green-400 transition-colors">
-                            Syarat & Ketentuan
-                        </a>
-                        <a href="#" class="hover:text-green-400 transition-colors">
-                            Lisensi
-                        </a>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Pengguna Aktif</div>
                 </div>
             </div>
         </div>
-    </footer>
 
-    <script>
-        // Fungsi untuk navigasi antar section
-        function navigate(section) {
-            // Sembunyikan semua section
-            document.querySelectorAll('main > section').forEach(sec => {
-                sec.classList.add('hidden');
+        <div id="provinces" class="page">
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-label">Eksplorasi</div>
+                    <h2 class="section-title">Jelajahi Provinsi</h2>
+                    <p class="section-description">
+                        Temukan kekayaan kuliner dari setiap provinsi di
+                        Indonesia. Setiap daerah memiliki warisan rasa yang unik
+                        dan berharga.
+                    </p>
+                </div>
+
+                <div class="filter-section">
+                    <button
+                        class="filter-btn active"
+                        onclick="filterProvinces('all')"
+                    >
+                        Semua
+                    </button>
+                    <button
+                        class="filter-btn"
+                        onclick="filterProvinces('jawa')"
+                    >
+                        Jawa
+                    </button>
+                    <button
+                        class="filter-btn"
+                        onclick="filterProvinces('sumatera')"
+                    >
+                        Sumatera
+                    </button>
+                    <button
+                        class="filter-btn"
+                        onclick="filterProvinces('kalimantan')"
+                    >
+                        Kalimantan
+                    </button>
+                    <button
+                        class="filter-btn"
+                        onclick="filterProvinces('sulawesi')"
+                    >
+                        Sulawesi
+                    </button>
+                    <button
+                        class="filter-btn"
+                        onclick="filterProvinces('bali-nusa')"
+                    >
+                        Bali & Nusa Tenggara
+                    </button>
+                </div>
+
+                <div class="provinces-grid" id="provincesGrid"></div>
+            </section>
+        </div>
+
+        <div id="culinary" class="page">
+            <section class="section">
+                <button class="back-btn" onclick="showPage('provinces')">
+                    Kembali
+                </button>
+                <div class="section-header">
+                    <h2 class="section-title" id="provinceTitle"></h2>
+                    <p class="section-description" id="provinceDesc"></p>
+                </div>
+
+                <div class="category-filters" id="categoryFilters">
+                    <button
+                        class="category-btn active"
+                        onclick="filterByCategory('all')"
+                        data-category="all"
+                    >
+                        Semua
+                    </button>
+                    <button
+                        class="category-btn"
+                        onclick="filterByCategory('Makanan')"
+                        data-category="Makanan"
+                    >
+                        Makanan
+                    </button>
+                    <button
+                        class="category-btn"
+                        onclick="filterByCategory('Minuman')"
+                        data-category="Minuman"
+                    >
+                        Minuman
+                    </button>
+                    <button
+                        class="category-btn"
+                        onclick="filterByCategory('Cemilan')"
+                        data-category="Cemilan"
+                    >
+                        Cemilan
+                    </button>
+                </div>
+
+                <div class="culinary-grid" id="culinaryGrid"></div>
+            </section>
+        </div>
+
+        <div id="ai" class="page">
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-label">Teknologi AI</div>
+                    <h2 class="section-title">Asisten Kuliner AI</h2>
+                    <p class="section-description">
+                        Tanyakan apapun seputar kuliner dan resep tradisional
+                        Indonesia kepada asisten AI kami
+                    </p>
+                </div>
+                <div class="ai-chat-container">
+                    <div class="chat-header">
+                        <h3>Asisten Kuliner Cerdas</h3>
+                        <p>
+                            Tanyakan tentang resep, bahan, cara memasak, atau
+                            kuliner daerah tertentu
+                        </p>
+                    </div>
+                    <div class="chat-messages" id="aiChatMessages">
+                        <div class="message ai">
+                            <div class="message-avatar">AI</div>
+                            <div class="message-content">
+                                Halo! Saya adalah asisten kuliner AI Cakranesia.
+                                Saya siap membantu Anda menemukan resep
+                                tradisional, memberikan tips memasak,
+                                menjelaskan bahan-bahan, atau merekomendasikan
+                                kuliner khas daerah. Mau masak apa hari ini?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <textarea
+                                class="chat-input"
+                                id="aiChatInput"
+                                rows="3"
+                                placeholder="Tanyakan tentang resep atau kuliner tradisional..."
+                            ></textarea>
+                            <button class="send-btn" onclick="sendAIMessage()">
+                                Kirim
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="community" class="page">
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-label">Kolaborasi</div>
+                    <h2 class="section-title">Komunitas Kuliner</h2>
+                    <p class="section-description">
+                        Bergabung, berbagi resep, tips memasak, dan foto kuliner
+                        dengan pecinta kuliner Indonesia
+                    </p>
+                </div>
+                <div class="community-container">
+                    <div class="province-selector">
+                        <button
+                            class="province-tab active"
+                            onclick="switchCommunity(this, 'Jawa Barat')"
+                        >
+                            Jawa Barat
+                        </button>
+                        <button
+                            class="province-tab"
+                            onclick="switchCommunity(this, 'Jawa Tengah')"
+                        >
+                            Jawa Tengah
+                        </button>
+                        <button
+                            class="province-tab"
+                            onclick="switchCommunity(this, 'Jawa Timur')"
+                        >
+                            Jawa Timur
+                        </button>
+                        <button
+                            class="province-tab"
+                            onclick="switchCommunity(this, 'Bali')"
+                        >
+                            Bali
+                        </button>
+                        <button
+                            class="province-tab"
+                            onclick="switchCommunity(this, 'Sumatera Barat')"
+                        >
+                            Sumatera Barat
+                        </button>
+                        <button
+                            class="province-tab"
+                            onclick="switchCommunity(this, 'Sulawesi Selatan')"
+                        >
+                            Sulawesi Selatan
+                        </button>
+                    </div>
+                    <div class="community-chat">
+                        <div
+                            class="community-messages"
+                            id="communityMessages"
+                        ></div>
+                        <div class="community-input-container">
+                            <div class="input-toolbar">
+                                <button
+                                    class="toolbar-btn"
+                                    onclick="attachFile('photo')"
+                                    title="Tambah Foto"
+                                >
+                                    Foto
+                                </button>
+                                <button
+                                    class="toolbar-btn"
+                                    onclick="attachFile('video')"
+                                    title="Tambah Video"
+                                >
+                                    Vidio
+                                </button>
+                                <button
+                                    class="toolbar-btn"
+                                    onclick="attachFile('recipe')"
+                                    title="Tambah Resep"
+                                >
+                                    Resep
+                                </button>
+                                <button
+                                    class="toolbar-btn"
+                                    onclick="attachFile('link')"
+                                    title="Tambah Link"
+                                >
+                                    Link
+                                </button>
+                            </div>
+                            <div class="community-input-wrapper">
+                                <input
+                                    type="text"
+                                    class="community-input"
+                                    id="communityInput"
+                                    placeholder="Bagikan resep, tips memasak, atau foto kuliner Anda..."
+                                />
+                                <button
+                                    class="send-btn"
+                                    onclick="sendCommunityMessage()"
+                                >
+                                    Kirim
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="team" class="page">
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-label">Tim Kami</div>
+                    <h2 class="section-title">Tim Japing (Java Yapping)</h2>
+                    <p class="section-description">
+                        Mahasiswa inovatif yang berkomitmen untuk pelestarian
+                        kuliner tradisional Indonesia
+                    </p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="nabila.jpg" alt="Nabila Dwi Putri Zaskia" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=NP'">
+                        <h3>Nabila Dwi Putri Zaskia</h3>
+                        <p>Project Manager & Penulis Proposal</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="vigar.jpg" alt="Muhammad Vigar Septianta Pratama" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MV'">
+                        <h3>Muhammad Vigar Septianta Pratama</h3>
+                        <p>Frontend Developer (UI/UX)</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="fadhil.jpg" alt="Ahmad Isnainil Fadhili" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=AI'">
+                        <h3>Ahmad Isnainil Fadhili</h3>
+                        <p>Backend Developer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="kevin.jpg" alt="M. Kevin Bayu Maulidi" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MK'">
+                        <h3>M. Kevin Bayu Maulidi</h3>
+                        <p>Content Researcher</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="dika.jpg" alt="M. Andika Aulia Haq" class="team-avatar" onerror="this.src='https://via.placeholder.com/120x120?text=MA'">
+                        <h3>M. Andika Aulia Haq</h3>
+                        <p>Multimedia Designer</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tentang Cakranesia Kuliner</h3>
+                    <p>
+                        Platform digital untuk melestarikan dan mempromosikan
+                        kekayaan kuliner tradisional Indonesia melalui teknologi
+                        modern dan interaktif. Bagian dari kompetisi BudayaGO!
+                        2025.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3>Navigasi</h3>
+                    <a onclick="showPage('home')" style="cursor: pointer"
+                        >Beranda</a
+                    >
+                    <a onclick="showPage('provinces')" style="cursor: pointer"
+                        >Provinsi</a
+                    >
+                    <a onclick="showPage('ai')" style="cursor: pointer"
+                        >Rekomendasi AI</a
+                    >
+                    <a onclick="showPage('community')" style="cursor: pointer"
+                        >Komunitas</a
+                    >
+                    <a onclick="showPage('team')" style="cursor: pointer"
+                        >Tim</a
+                    >
+                </div>
+                <div class="footer-section">
+                    <h3>Kontak</h3>
+                    <a href="mailto:japingbudaya@gmail.com"
+                        >japingbudaya@gmail.com</a
+                    >
+                    <a href="https://wa.me/6288805226080" target="_blank"
+                        >+6288805226080</a
+                    >
+                    <p>Gresik, Jawa Timur</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Kompetisi</h3>
+                    <p>
+                        BudayaGO! 2025 - Kompetisi Inovasi Digital Budaya
+                        Indonesia. Kategori: Pelestarian dan Konservasi
+                        Kebudayaan
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>
+                    &copy; 2025 Cakranesia - Tim Japing. Semua hak dilindungi.
+                </p>
+            </div>
+        </footer>
+
+        <div class="modal" id="videoModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()">×</button>
+                <h2 id="modalTitle"></h2>
+                <div class="modal-video" id="videoPlayer"></div>
+                <a
+                    href="#"
+                    id="youtubeLink"
+                    class="youtube-link"
+                    target="_blank"
+                    style="display: none"
+                >
+                    ▶ Tonton Tutorial di YouTube
+                </a>
+                <div class="recipe-section">
+                    <h3>Bahan-bahan</h3>
+                    <div class="ingredients-grid" id="ingredientsSection"></div>
+                </div>
+                <div class="recipe-section">
+                    <h3>Langkah Pembuatan</h3>
+                    <ol class="steps-list" id="stepsSection"></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-modal" id="searchModal">
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input
+                        type="text"
+                        class="search-input"
+                        placeholder="Cari kuliner tradisional..."
+                        id="searchInput"
+                        oninput="searchCulinary()"
+                    />
+                    <span class="search-close-icon" onclick="clearSearch()">×</span>
+                    <span class="search-icon"></span>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+
+        <script>
+            const culinaryData = {
+                "Jawa Barat": {
+                    island: "jawa",
+                    image: "jawa barat.jpg",
+                    desc: "Jawa Barat dikenal dengan kekayaan kuliner khas Sunda yang menonjolkan cita rasa segar, ringan, dan alami. Hidangan seperti nasi timbel, karedok, lotek, dan peuyeum Bandung mencerminkan kearifan lokal masyarakat Sunda dalam memanfaatkan bahan-bahan alami Nusantara.",
+                    foods: [
+                        {
+                            name: "Nasi Timbel",
+                            image: "nasi timbel.jpeg",
+                            category: "Makanan",
+                            desc: "Nasi timbel adalah nasi hangat yang dibungkus daun pisang, disajikan dengan lauk seperti ayam goreng, tahu, tempe, sambal, dan lalapan. Aromanya yang khas dari daun pisang mencerminkan kesederhanaan dan kehangatan kuliner Sunda.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+nasi+timbel",
+                            ingredients: [
+                                "Beras 500g",
+                                "Daun pisang",
+                                "Ayam 1 ekor",
+                            ],
+                            steps: [
+                                "Masak nasi",
+                                "Bungkus dengan daun pisang",
+                                "Sajikan dengan lauk",
+                            ],
+                        },
+                        {
+                            name: "Bandrek",
+                            image: "bandrek.jpg",
+                            category: "Minuman",
+                            desc: "Bandrek merupakan minuman tradisional khas Sunda berbahan dasar jahe, gula merah, dan rempah-rempah. Minuman ini dipercaya menghangatkan tubuh, cocok dinikmati di daerah pegunungan yang sejuk, sekaligus melambangkan keakraban masyarakat Sunda.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+bandrek",
+                            ingredients: ["Jahe 100g", "Gula aren 150g"],
+                            steps: [
+                                "Rebus jahe",
+                                "Tambahkan gula aren",
+                                "Sajikan hangat",
+                            ],
+                        },
+                        {
+                            name: "Combro",
+                            image: "combro.png",
+                            category: "Cemilan",
+                            desc: "Combro adalah camilan gurih dari singkong parut yang diisi sambal oncom pedas, lalu digoreng hingga renyah. Makanan ini menunjukkan kreativitas masyarakat Sunda dalam mengolah bahan lokal menjadi hidangan lezat dan sederhana.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+combro",
+                            ingredients: ["Singkong 500g", "Oncom 150g"],
+                            steps: [
+                                "Parut singkong",
+                                "Isi dengan oncom",
+                                "Goreng hingga matang",
+                            ],
+                        },
+                    ],
+                },
+                "Jawa Tengah": {
+                    island: "jawa",
+                    image: "jawa tengah.jpg",
+                    desc: "Jawa Tengah memiliki kekayaan kuliner tradisional yang bercita rasa manis dan sarat makna budaya. Makanan khas seperti gudeg, lumpia, soto kudus, dan tahu gimbal mencerminkan kehangatan serta kearifan lokal masyarakat Jawa yang menjunjung nilai kesederhanaan dan gotong royong dalam kuliner Nusantara.",
+                    foods: [
+                        {
+                            name: "Gudeg",
+                            image: "gudeg.jpg",
+                            category: "Makanan",
+                            desc: "Gudeg adalah olahan nangka muda yang dimasak lama dengan santan dan gula merah, menghasilkan rasa manis khas. Hidangan ini menjadi ikon kuliner Yogyakarta dan mencerminkan kelembutan serta kesabaran dalam budaya Jawa.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+gudeg",
+                            ingredients: ["Nangka muda 1kg", "Santan 1L"],
+                            steps: [
+                                "Potong nangka",
+                                "Masak dengan santan",
+                                "Tambahkan bumbu",
+                            ],
+                        },
+                        {
+                            name: "Wedang Ronde",
+                            image: "ronde.jpg",
+                            category: "Minuman",
+                            desc: "Wedang ronde merupakan minuman hangat berisi bola-bola tepung ketan dengan isi kacang, disajikan bersama jahe dan gula merah. Minuman ini melambangkan kehangatan, kebersamaan, dan keramahan masyarakat Jawa Tengah.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+wedang+ronde",
+                            ingredients: ["Tepung ketan 200g", "Jahe 100g"],
+                            steps: [
+                                "Buat bola ketan",
+                                "Rebus dengan jahe",
+                                "Sajikan hangat",
+                            ],
+                        },
+                        {
+                            name: "Serabi Solo",
+                            image: "serabi.jpg",
+                            category: "Cemilan",
+                            desc: "Serabi Solo adalah panekuk tradisional dari tepung beras dan santan, dengan pinggiran garing dan tengah lembut. Rasanya yang gurih manis mencerminkan kesederhanaan dan cita rasa klasik kuliner Jawa Tengah.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+wingko",
+                            ingredients: ["Kelapa parut 400g"],
+                            steps: ["Campur bahan", "Panggang", "Sajikan"],
+                        },
+                    ],
+                },
+                "Jawa Timur": {
+                    island: "jawa",
+                    image: "tugu pahlawan.jpg",
+                    desc: "Kuliner Jawa Timur dikenal dengan cita rasa gurih dan pedas yang kuat. Hidangan seperti rawon, rujak cingur, sate madura, dan lontong balap mencerminkan semangat masyarakatnya yang tegas, berani, dan penuh rasa dalam kekayaan kuliner Nusantara.",
+                    foods: [
+                        {
+                            name: "Rawon",
+                            image: "rawon.jpg",
+                            category: "Makanan",
+                            desc: "Rawon adalah sup daging sapi berkuah hitam pekat dari kluwek yang memiliki cita rasa gurih dan kaya rempah. Hidangan ini menjadi ikon kuliner Jawa Timur yang menggambarkan kekuatan rasa dan karakter masyarakatnya.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+rawon",
+                            ingredients: ["Daging sapi 500g", "Kluwek 6 butir"],
+                            steps: ["Rebus daging", "Tumis bumbu", "Sajikan"],
+                        },
+                        {
+                            name: "Es Cong Lik",
+                            image: "conglek.jpg",
+                            category: "Minuman",
+                            desc: "Es Cong Lik adalah es campur legendaris asal Surabaya, berisi aneka isian seperti alpukat, kacang hijau, dan mutiara dengan sirup manis serta susu kental. Kesegarannya mencerminkan keceriaan dan keunikan kuliner jalanan Jawa Timur.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+es+cong+lik",
+                            ingredients: ["Tape 100g", "Cincau 100g"],
+                            steps: [
+                                "Potong bahan",
+                                "Tambahkan es",
+                                "Siram sirup",
+                            ],
+                        },
+                        {
+                            name: "Onde-onde",
+                            image: "onde.jpg",
+                            category: "Cemilan",
+                            desc: "Onde-onde merupakan jajanan tradisional dari Mojokerto yang terbuat dari tepung ketan berisi kacang hijau dan dilapisi biji wijen. Bentuk bulatnya melambangkan keutuhan dan keharmonisan dalam budaya kuliner Jawa Timur.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+onde+onde",
+                            ingredients: ["Tepung ketan 300g"],
+                            steps: ["Bentuk bulat", "Balut wijen", "Goreng"],
+                        },
+                    ],
+                },
+                Bali: {
+                    island: "bali-nusa",
+                    image: "bali.jpg",
+                    desc: "Bali memiliki kuliner khas yang sarat filosofi dan upacara adat. Makanan seperti babi guling, lawar, dan sate lilit mencerminkan harmoni antara rasa, tradisi, dan spiritualitas dalam budaya kuliner Nusantara.",
+                    foods: [
+                        {
+                            name: "Babi Guling",
+                            image: "babi.jpg",
+                            category: "Makanan",
+                            desc: "Babi guling adalah hidangan khas Bali berupa babi utuh yang dipanggang dengan bumbu base genep dan rempah khas Bali. Sajian ini biasanya hadir dalam upacara adat, melambangkan rasa syukur dan keharmonisan spiritual masyarakat Bali.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+babi+guling",
+                            ingredients: ["Babi 5kg", "Bumbu base"],
+                            steps: ["Lumuri bumbu", "Panggang", "Sajikan"],
+                        },
+                        {
+                            name: "Es Daluman",
+                            image: "daluman.jpg",
+                            category: "Minuman",
+                            desc: "Es daluman merupakan minuman segar khas Bali yang terbuat dari daun daluman (sejenis cincau hijau) dengan campuran santan dan gula merah cair. Rasanya yang lembut dan manis alami memberi kesegaran khas tropis Pulau Dewata.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+es+daluman",
+                            ingredients: [
+                                "Cincau hijau",
+                                "Santan",
+                                "Gula merah",
+                            ],
+                            steps: [
+                                "Potong cincau",
+                                "Tambahkan santan",
+                                "Sajikan dingin",
+                            ],
+                        },
+                        {
+                            name: "Jaja Uli",
+                            image: "jaja.jpg",
+                            category: "Cemilan",
+                            desc: "Jaja uli adalah kue tradisional Bali berbahan dasar ketan yang digoreng atau dipanggang, sering disajikan saat upacara adat. Teksturnya yang kenyal dan rasa gurih manis mencerminkan kesederhanaan dan kebersamaan dalam budaya Bali.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+jaja+uli",
+                            ingredients: ["Tepung ketan", "Kelapa parut"],
+                            steps: ["Kukus adonan", "Gulung kelapa", "Potong"],
+                        },
+                    ],
+                },
+                "Sumatera Barat": {
+                    island: "sumatera",
+                    image: "sumatera barat.jpg",
+                    desc: "Kuliner Minangkabau dari Sumatera Barat terkenal akan kelezatan dan kekayaan rempahnya. Hidangan seperti rendang, sate padang, dan dendeng balado menjadi simbol identitas budaya yang menjunjung rasa, tradisi merantau, serta kebanggaan kuliner Nusantara.",
+                    foods: [
+                        {
+                            name: "Rendang",
+                            image: "rendang.jpg",
+                            category: "Makanan",
+                            desc: "Rendang adalah masakan daging sapi yang dimasak lama dengan santan dan aneka rempah hingga meresap sempurna. Hidangan ini menjadi simbol kebanggaan Minangkabau dan telah dikenal sebagai salah satu kuliner terenak di dunia.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+rendang",
+                            ingredients: ["Daging sapi 1kg", "Santan 1L"],
+                            steps: [
+                                "Haluskan bumbu",
+                                "Masak dengan santan",
+                                "Tumis hingga kering",
+                            ],
+                        },
+                        {
+                            name: "Teh Talua",
+                            image: "teh.jpg",
+                            category: "Minuman",
+                            desc: "Teh talua merupakan minuman khas Minang yang terbuat dari campuran teh panas, gula, dan kuning telur yang dikocok hingga berbusa. Minuman ini dipercaya menambah energi dan menggambarkan kehangatan budaya perantauan Sumatera Barat.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+teh+talua",
+                            ingredients: ["Teh", "Telur", "Jeruk nipis"],
+                            steps: ["Seduh teh", "Kocok telur", "Campurkan"],
+                        },
+                        {
+                            name: "Keripik Balado",
+                            image: "keripik.jpg",
+                            category: "Cemilan",
+                            desc: "Keripik balado adalah camilan renyah dari irisan tipis kentang yang dibalut sambal merah pedas manis khas Padang. Rasanya yang kuat dan menggugah selera mencerminkan karakter berani dan penuh cita rasa masyarakat Minangkabau.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+keripik+balado",
+                            ingredients: ["Singkong", "Cabai"],
+                            steps: ["Iris singkong", "Goreng", "Baluri balado"],
+                        },
+                    ],
+                },
+                "Sulawesi Selatan": {
+                    island: "sulawesi",
+                    image: "sulawesi selatan.jpg",
+                    desc: "Sulawesi Selatan menghadirkan cita rasa khas dari laut dan darat yang berpadu harmonis. Makanan seperti coto makassar, pallubasa, konro, dan barongko mencerminkan kekuatan tradisi dan kehangatan budaya Bugis-Makassar dalam ragam kuliner Nusantara.",
+                    foods: [
+                        {
+                            name: "Coto Makassar",
+                            image: "coto.jpg",
+                            category: "Makanan",
+                            desc: "Coto Makassar adalah sup khas Bugis-Makassar berbahan dasar daging sapi dan jeroan yang dimasak dengan rempah dan kacang tanah sangrai. Kuahnya yang gurih dan kental menjadi simbol kehangatan dan kekuatan budaya kuliner Sulawesi Selatan.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+coto+makassar",
+                            ingredients: ["Jeroan 500g", "Kacang tanah 200g"],
+                            steps: [
+                                "Rebus jeroan",
+                                "Haluskan kacang",
+                                "Sajikan dengan ketupat",
+                            ],
+                        },
+                        {
+                            name: "Es Pallu Butung",
+                            image: "palubutung.jpg",
+                            category: "Minuman",
+                            desc: "Es pallu butung merupakan hidangan penutup segar dari pisang kukus yang disajikan dengan bubur santan, sirup merah, dan es serut. Rasanya yang manis dan lembut mencerminkan keceriaan dan kehangatan khas masyarakat Makassar.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+es+pallu+butung",
+                            ingredients: ["Pisang", "Tepung beras", "Santan"],
+                            steps: [
+                                "Bungkus pisang",
+                                "Kukus",
+                                "Sajikan dengan es",
+                            ],
+                        },
+                        {
+                            name: "Baje",
+                            image: "baje.jpg",
+                            category: "Cemilan",
+                            desc: "Baje adalah kudapan tradisional dari kacang tanah yang dilapisi gula merah kental hingga mengeras. Camilan ini sering hadir dalam acara adat Bugis-Makassar, melambangkan manisnya kebersamaan dan rasa syukur masyarakat Sulawesi Selatan.",
+                            youtubeUrl:
+                                "https://www.youtube.com/results?search_query=cara+membuat+baje",
+                            ingredients: ["Kelapa", "Gula merah"],
+                            steps: ["Sangrai kelapa", "Campur gula", "Cetak"],
+                        },
+                    ],
+                },
+                 "Dan 32 Provinsi lainya": {
+                    island: "Kota",
+                    image: "Foto",
+                    desc: "Deskripsi",
+                    foods: [
+                        {
+                            name: "Makanan",
+                            image: "Foto",
+                            category: "Makanan",
+                            desc: "Deskripsi makanan",
+                            youtubeUrl:
+                                "Link Youtube",
+                            ingredients: ["bahan-bahan"],
+                            steps: [
+                                "Tutorial",
+                            ],
+                        },
+                        {
+                            name: "Minuman",
+                            image: "Foto",
+                            category: "Minuman",
+                            desc: "Deskripsi minuman",
+                            youtubeUrl:
+                                "Link Youtube",
+                            ingredients: ["bahan-bahan"],
+                            steps: [
+                                "Tutorial",
+                            ],
+                        },
+                        {
+                            name: "Cemilan",
+                            image: "Foto",
+                            category: "Cemilan",
+                            desc: "Deskripsi cemilan",
+                            youtubeUrl:
+                                "Link Youtube",
+                            ingredients: ["bahan-bahan"],
+                            steps: [
+                                "Tutorial",
+                            ],
+                        },
+                    ],
+                },
+            };
+
+            let currentProvince = "";
+            let currentCategory = "all";
+            let allCulinaryItems = [];
+
+            function showPage(pageId) {
+                document
+                    .querySelectorAll(".page")
+                    .forEach((page) => page.classList.remove("active"));
+                document.getElementById(pageId).classList.add("active");
+                document.getElementById("navMenu").classList.remove("active");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+            function toggleMenu() {
+                document.getElementById("navMenu").classList.toggle("active");
+            }
+
+            function loadProvinces() {
+                const grid = document.getElementById("provincesGrid");
+                grid.innerHTML = "";
+
+                Object.keys(culinaryData).forEach((province) => {
+                    const data = culinaryData[province];
+                    const card = document.createElement("div");
+                    card.className = "province-card";
+                    card.setAttribute("data-island", data.island);
+                    card.innerHTML = `
+            <img src="${data.image}" alt="${province}" class="province-image" onerror="this.src='https://via.placeholder.com/400x250?text=${province}'">
+            <div class="province-content">
+                <h3 class="province-name">${province}</h3>
+                <p class="province-desc">${data.desc}</p>
+                <span class="province-count">${data.foods.length} Kuliner</span>
+            </div>
+        `;
+                    card.onclick = () => showCulinary(province);
+                    grid.appendChild(card);
+                });
+            }
+
+            function filterProvinces(island) {
+                const cards = document.querySelectorAll(".province-card");
+                const buttons = document.querySelectorAll(".filter-btn");
+
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                event.target.classList.add("active");
+
+                cards.forEach((card) => {
+                    if (
+                        island === "all" ||
+                        card.getAttribute("data-island") === island
+                    ) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+
+            function showCulinary(province) {
+                currentProvince = province;
+                currentCategory = "all";
+                const data = culinaryData[province];
+                document.getElementById("provinceTitle").textContent =
+                    `Kuliner ${province}`;
+                document.getElementById("provinceDesc").textContent = data.desc;
+
+                allCulinaryItems = data.foods;
+                renderCulinaryGrid();
+
+                document
+                    .querySelectorAll(".category-btn")
+                    .forEach((btn) => btn.classList.remove("active"));
+                document
+                    .querySelector('.category-btn[data-category="all"]')
+                    .classList.add("active");
+
+                showPage("culinary");
+            }
+
+            function filterByCategory(category) {
+                currentCategory = category;
+
+                document
+                    .querySelectorAll(".category-btn")
+                    .forEach((btn) => btn.classList.remove("active"));
+                event.target.classList.add("active");
+
+                renderCulinaryGrid();
+            }
+
+            function renderCulinaryGrid() {
+                const grid = document.getElementById("culinaryGrid");
+                grid.innerHTML = "";
+
+                const filteredFoods =
+                    currentCategory === "all"
+                        ? allCulinaryItems
+                        : allCulinaryItems.filter(
+                              (food) => food.category === currentCategory,
+                          );
+
+                if (filteredFoods.length === 0) {
+                    grid.innerHTML =
+                        '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 3rem; grid-column: 1/-1;">Tidak ada kuliner dalam kategori ini.</p>';
+                    return;
+                }
+
+                filteredFoods.forEach((food) => {
+                    const card = document.createElement("div");
+                    card.className = "culinary-card";
+                    card.innerHTML = `
+            <img src="${food.image}" alt="${food.name}" class="culinary-thumbnail" onerror="this.src='https://via.placeholder.com/400x250?text=${food.name}'">
+            <div class="culinary-content">
+                <h3 class="culinary-name">${food.name}</h3>
+                <div class="culinary-tags">
+                    <span class="tag">${food.category}</span>
+                    <span class="tag">${currentProvince}</span>
+                </div>
+                <p class="culinary-desc">${food.desc}</p>
+                <button class="watch-tutorial">Lihat Resep & Tutorial</button>
+            </div>
+        `;
+                    card.onclick = () => showRecipe(food);
+                    grid.appendChild(card);
+                });
+            }
+
+            function showRecipe(food) {
+                document.getElementById("videoModal").classList.add("active");
+                document.getElementById("modalTitle").textContent = food.name;
+                document.getElementById("videoPlayer").innerHTML =
+                    `<img src="${food.image}" alt="${food.name}" onerror="this.src='https://via.placeholder.com/800x450?text=${food.name}'">`;
+
+                const youtubeLink = document.getElementById("youtubeLink");
+                if (food.youtubeUrl) {
+                    youtubeLink.href = food.youtubeUrl;
+                    youtubeLink.style.display = "inline-flex";
+                } else {
+                    youtubeLink.style.display = "none";
+                }
+
+                const ingredientsSection =
+                    document.getElementById("ingredientsSection");
+                ingredientsSection.innerHTML = "";
+                food.ingredients.forEach((ingredient) => {
+                    const div = document.createElement("div");
+                    div.className = "ingredient-item";
+                    div.textContent = ingredient;
+                    ingredientsSection.appendChild(div);
+                });
+
+                const stepsSection = document.getElementById("stepsSection");
+                stepsSection.innerHTML = "";
+                food.steps.forEach((step) => {
+                    const li = document.createElement("li");
+                    li.className = "step-item";
+                    li.textContent = step;
+                    stepsSection.appendChild(li);
+                });
+
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeModal() {
+                document
+                    .getElementById("videoModal")
+                    .classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+
+            function openSearch() {
+                document.getElementById("searchModal").classList.add("active");
+                document.getElementById("searchInput").focus();
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeSearch() {
+                document
+                    .getElementById("searchModal")
+                    .classList.remove("active");
+                document.getElementById("searchInput").value = "";
+                document.getElementById("searchResults").innerHTML = "";
+                document.body.style.overflow = "auto";
+            }
+
+            function clearSearch() {
+                document.getElementById("searchInput").value = "";
+                document.getElementById("searchResults").innerHTML = "";
+                document.getElementById("searchInput").focus();
+            }
+
+            function searchCulinary() {
+                const query = document
+                    .getElementById("searchInput")
+                    .value.toLowerCase();
+                const results = document.getElementById("searchResults");
+                const closeIcon = document.querySelector(".search-close-icon");
+                
+                results.innerHTML = "";
+
+                if (query.length > 0) {
+                    closeIcon.style.display = "block";
+                } else {
+                    closeIcon.style.display = "none";
+                }
+
+                if (query.length < 2) return;
+
+                Object.keys(culinaryData).forEach((province) => {
+                    culinaryData[province].foods.forEach((food) => {
+                        if (
+                            food.name.toLowerCase().includes(query) ||
+                            food.desc.toLowerCase().includes(query) ||
+                            food.category.toLowerCase().includes(query) ||
+                            province.toLowerCase().includes(query)
+                        ) {
+                            const item = document.createElement("div");
+                            item.className = "search-result-item";
+                            item.innerHTML = `
+                    <strong>${food.name}</strong><br>
+                    <small style="color: rgba(255,255,255,0.6)">${province} - ${food.category}</small>
+                `;
+                            item.onclick = () => {
+                                closeSearch();
+                                showCulinary(province);
+                                setTimeout(() => showRecipe(food), 500);
+                            };
+                            results.appendChild(item);
+                        }
+                    });
+                });
+
+                if (results.children.length === 0) {
+                    results.innerHTML =
+                        '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 2rem;">Tidak ditemukan hasil untuk "' +
+                        query +
+                        '"</p>';
+                }
+            }
+
+            function sendAIMessage() {
+                const input = document.getElementById("aiChatInput");
+                const messages = document.getElementById("aiChatMessages");
+                const text = input.value.trim();
+
+                if (!text) return;
+
+                const userMsg = document.createElement("div");
+                userMsg.className = "message user";
+                userMsg.innerHTML = `
+        <div class="message-avatar">U</div>
+        <div class="message-content">${text}</div>
+    `;
+                messages.appendChild(userMsg);
+                input.value = "";
+
+                setTimeout(() => {
+                    const aiMsg = document.createElement("div");
+                    aiMsg.className = "message ai";
+                    aiMsg.innerHTML = `
+            <div class="message-avatar">AI</div>
+            <div class="message-content">${getAIResponse(text)}</div>
+        `;
+                    messages.appendChild(aiMsg);
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1000);
+
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function getAIResponse(query) {
+                const q = query.toLowerCase();
+
+                if (q.includes("rendang")) {
+                    return "Rendang adalah masakan khas Minangkabau yang sudah mendunia! Untuk membuat rendang yang enak, kuncinya ada pada rempah-rempah yang lengkap dan proses memasak yang sabar. Gunakan daging sapi has dalam, santan kental dari kelapa tua, dan masak minimal 4-5 jam hingga bumbu meresap sempurna.";
+                } else if (
+                    q.includes("dessert") ||
+                    q.includes("manis") ||
+                    q.includes("kue")
+                ) {
+                    return "Indonesia punya banyak dessert tradisional yang lezat! Ada klepon, onde-onde, lupis, cenil, es cendol, es teler, dan masih banyak lagi. Kebanyakan menggunakan bahan dasar kelapa, gula merah, dan tepung ketan.";
+                } else if (q.includes("sehat") || q.includes("diet")) {
+                    return "Kuliner Indonesia bisa disesuaikan untuk diet sehat! Pilih masakan yang direbus atau dikukus seperti pepes, botok, atau tim ayam. Kurangi santan dan gula, perbanyak sayuran dan protein rendah lemak.";
+                } else if (
+                    q.includes("cara") ||
+                    q.includes("tips") ||
+                    q.includes("bagaimana")
+                ) {
+                    return "Untuk memasak kuliner Indonesia yang enak, kuncinya ada di rempah-rempah segar! Gunakan bumbu yang baru dihaluskan, jangan yang sudah lama. Perhatikan teknik memasak: tumis bumbu hingga harum, gunakan api yang tepat, dan beri waktu untuk bumbu meresap.";
+                } else if (
+                    q.includes("rekomendasi") ||
+                    q.includes("saran") ||
+                    q.includes("coba")
+                ) {
+                    return "Saya merekomendasikan untuk mencoba rendang dari Sumatera Barat, gudeg dari Yogyakarta, rawon dari Jawa Timur, atau babi guling dari Bali. Semua ini adalah kuliner ikonik yang wajib dicoba!";
+                } else {
+                    return "Terima kasih sudah bertanya! Saya bisa membantu Anda dengan informasi tentang resep kuliner tradisional Indonesia, tips memasak, bahan-bahan yang digunakan, atau rekomendasi kuliner dari berbagai daerah. Silakan tanyakan hal spesifik yang ingin Anda ketahui! 😊";
+                }
+            }
+
+            let currentCommunityProvince = "Jawa Barat";
+
+            const communityMessages = {
+                "Jawa Barat": [
+                    {
+                        user: "Siti Nurhaliza",
+                        avatar: "SN",
+                        time: "2 jam yang lalu",
+                        text: "Baru coba bikin karedok sendiri di rumah! Ternyata gampang banget ya. Kuncinya di bumbu kacangnya.",
+                        attachment: null,
+                    },
+                    {
+                        user: "Budi Santoso",
+                        avatar: "BS",
+                        time: "1 jam yang lalu",
+                        text: "Betul! Saya tambahkan sedikit terasi biar lebih gurih.",
+                        attachment: null,
+                    },
+                ],
+                "Jawa Tengah": [
+                    {
+                        user: "Rina Wati",
+                        avatar: "RW",
+                        time: "3 jam yang lalu",
+                        text: "Gudeg buatan saya kok kurang manis ya? Ada tips?",
+                        attachment: null,
+                    },
+                    {
+                        user: "Agus Salim",
+                        avatar: "AS",
+                        time: "2 jam yang lalu",
+                        text: "Coba masak lebih lama mbak, minimal 6 jam. Gula merahnya akan meresap sempurna.",
+                        attachment: null,
+                    },
+                ],
+                "Jawa Timur": [
+                    {
+                        user: "Fahmi Rahman",
+                        avatar: "FR",
+                        time: "4 jam yang lalu",
+                        text: "Rawon paling enak kalau pakai kluwek asli!",
+                        attachment: null,
+                    },
+                ],
+                Bali: [
+                    {
+                        user: "Made Wirawan",
+                        avatar: "MW",
+                        time: "5 jam yang lalu",
+                        text: "Baru selesai bikin babi guling untuk upacara. 8 jam masak!",
+                        attachment: {
+                            icon: "📷",
+                            text: "babi-guling-ceremony.jpg",
+                        },
+                    },
+                ],
+                "Sumatera Barat": [
+                    {
+                        user: "Roni Padang",
+                        avatar: "RP",
+                        time: "3 jam yang lalu",
+                        text: "Rendang terenak itu yang masak 12 jam!",
+                        attachment: null,
+                    },
+                ],
+                "Sulawesi Selatan": [
+                    {
+                        user: "Andi Makassar",
+                        avatar: "AM",
+                        time: "4 jam yang lalu",
+                        text: "Coto Makassar paling mantap kalau pakai jeroan sapi segar!",
+                        attachment: null,
+                    },
+                ],
+            };
+
+            function loadCommunityMessages(province) {
+                const container = document.getElementById("communityMessages");
+                container.innerHTML = "";
+
+                const messages = communityMessages[province] || [];
+                messages.forEach((msg) => {
+                    const messageDiv = document.createElement("div");
+                    messageDiv.className = "community-message";
+                    messageDiv.innerHTML = `
+            <div class="message-header">
+                <div class="user-avatar">${msg.avatar}</div>
+                <div class="user-info">
+                    <div class="user-name">${msg.user}</div>
+                    <div class="message-time">${msg.time}</div>
+                </div>
+            </div>
+            <div class="message-text">${msg.text}</div>
+            ${
+                msg.attachment
+                    ? `
+                <a href="#" class="message-attachment">
+                    <span style="font-size: 1.5rem">${msg.attachment.icon}</span>
+                    <span>${msg.attachment.text}</span>
+                </a>
+            `
+                    : ""
+            }
+        `;
+                    container.appendChild(messageDiv);
+                });
+
+                container.scrollTop = container.scrollHeight;
+            }
+
+            function switchCommunity(button, province) {
+                document
+                    .querySelectorAll(".province-tab")
+                    .forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+                currentCommunityProvince = province;
+                loadCommunityMessages(province);
+            }
+
+            function sendCommunityMessage() {
+                const input = document.getElementById("communityInput");
+                const text = input.value.trim();
+
+                if (!text) return;
+
+                const container = document.getElementById("communityMessages");
+                const messageDiv = document.createElement("div");
+                messageDiv.className = "community-message";
+                messageDiv.innerHTML = `
+        <div class="message-header">
+            <div class="user-avatar">U</div>
+            <div class="user-info">
+                <div class="user-name">Anda</div>
+                <div class="message-time">Baru saja</div>
+            </div>
+        </div>
+        <div class="message-text">${text}</div>
+    `;
+                container.appendChild(messageDiv);
+                input.value = "";
+                container.scrollTop = container.scrollHeight;
+            }
+
+            function attachFile(type) {
+                const fileTypes = {
+                    photo: "Foto",
+                    video: "Video",
+                    recipe: "Resep",
+                    link: "Link",
+                };
+                alert(
+                    `Fitur upload ${fileTypes[type]} akan segera tersedia!`,
+                );
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                loadProvinces();
+                loadCommunityMessages(currentCommunityProvince);
+
+                document
+                    .getElementById("aiChatInput")
+                    .addEventListener("keypress", function (e) {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            sendAIMessage();
+                        }
+                    });
+
+                document
+                    .getElementById("communityInput")
+                    .addEventListener("keypress", function (e) {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            sendCommunityMessage();
+                        }
+                    });
+                
+                document
+                    .getElementById("searchInput")
+                    .addEventListener("keypress", function (e) {
+                        if (e.key === "Escape") {
+                            closeSearch();
+                        }
+                    });
             });
 
-            // Tampilkan section yang dipilih
-            const targetSection = document.getElementById(section + '-section');
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-            }
+            document
+                .getElementById("videoModal")
+                .addEventListener("click", function (e) {
+                    if (e.target === this) {
+                        closeModal();
+                    }
+                });
 
-            // Tutup mobile menu jika terbuka
-            document.getElementById('mobile-menu').classList.add('hidden');
-        }
-
-        // Fungsi untuk toggle mobile menu
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Fungsi untuk mensimulasikan scan hama
-        function startScan() {
-            alert('Fitur scan akan membuka kamera perangkat Anda. Pastikan Anda memberikan izin akses kamera.');
-        }
-
-        // Fungsi untuk mengirim pesan di AI Assistant
-        function sendUserMessage() {
-            const input = document.getElementById('chat-input');
-            const message = input.value.trim();
+            document
+                .getElementById("searchModal")
+                .addEventListener("click", function (e) {
+                    if (e.target === this) {
+                        closeSearch();
+                    }
+                });
             
-            if (message) {
-                sendMessage(message);
-                input.value = '';
-            }
-        }
-
-        function sendMessage(text) {
-            // Tambahkan pesan pengguna
-            const chatContainer = document.querySelector('.bg-gray-50');
-            const userMessage = document.createElement('div');
-            userMessage.className = 'flex items-start space-x-3 flex-row-reverse space-x-reverse';
-            userMessage.innerHTML = `
-                <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-green-500 to-emerald-600">
-                    <i class="fas fa-user text-white w-6 h-6"></i>
-                </div>
-                <div class="flex-1 max-w-[70%] items-end">
-                    <div class="rounded-2xl p-4 shadow-md bg-gradient-to-r from-green-500 to-emerald-600 text-white">
-                        <p class="text-sm leading-relaxed whitespace-pre-line">${text}</p>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-1 px-2">${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</p>
-                </div>
-            `;
-            chatContainer.appendChild(userMessage);
-
-            // Scroll ke bawah
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Simulasikan respons AI
-            setTimeout(() => {
-                const aiResponse = generateAIResponse(text);
-                const aiMessage = document.createElement('div');
-                aiMessage.className = 'flex items-start space-x-3';
-                aiMessage.innerHTML = `
-                    <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-600">
-                        <i class="fas fa-robot text-white w-6 h-6"></i>
-                    </div>
-                    <div class="flex-1 max-w-[70%] items-start">
-                        <div class="rounded-2xl p-4 shadow-md bg-white text-gray-800">
-                            <p class="text-sm leading-relaxed whitespace-pre-line">${aiResponse}</p>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1 px-2">${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</p>
-                    </div>
-                `;
-                chatContainer.appendChild(aiMessage);
-
-                // Scroll ke bawah lagi
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 1000);
-        }
-
-        function generateAIResponse(question) {
-            const lowerQuestion = question.toLowerCase();
-
-            if (lowerQuestion.includes('ulat grayak') || lowerQuestion.includes('ulat')) {
-                return 'Untuk mengatasi ulat grayak, saya rekomendasikan: 1) Aplikasi Bacillus thuringiensis (pestisida biologis), 2) Penyemprotan larutan bawang putih + cabai, 3) Pemasangan perangkap feromon, 4) Monitoring rutin setiap 2 hari. Waktu optimal penyemprotan adalah sore/malam hari saat ulat aktif makan.';
-            } else if (lowerQuestion.includes('pestisida organik') || lowerQuestion.includes('organik')) {
-                return 'Pestisida organik yang aman dan efektif: 1) Ekstrak daun mimba (neem), 2) Larutan bawang putih + cabai + sabun, 3) Ekstrak daun pepaya, 4) Campuran minyak nabati + detergen. Semua bahan ini ramah lingkungan dan tidak meninggalkan residu berbahaya.';
-            } else if (lowerQuestion.includes('tanah') || lowerQuestion.includes('kualitas')) {
-                return 'Untuk meningkatkan kualitas tanah: 1) Tambahkan kompos matang 2-3 ton/ha, 2) Terapkan sistem rotasi tanaman, 3) Tanam tanaman penutup tanah, 4) Hindari pembakaran jerami, gunakan sebagai mulsa, 5) Lakukan pengapuran jika pH terlalu asam. Scan tanah Anda dengan fitur Soil Scanner untuk analisis lebih detail!';
-            } else if (lowerQuestion.includes('penyemprotan') || lowerQuestion.includes('waktu')) {
-                return 'Waktu terbaik penyemprotan: 1) Pagi hari (06:00-09:00) atau sore hari (16:00-18:00), 2) Hindari saat terik matahari (mengurangi efektivitas), 3) Jangan semprot saat hujan atau angin kencang, 4) Periksa prediksi cuaca di fitur Prediksi Serangan kami untuk timing optimal.';
-            } else {
-                return 'Terima kasih atas pertanyaan Anda. Untuk informasi lebih spesifik, silakan: 1) Gunakan fitur Scan Hama untuk deteksi akurat, 2) Cek Peta Persebaran Hama di area Anda, 3) Lihat Prediksi Serangan untuk perencanaan, 4) Atau bergabung di Komunitas Petani untuk berbagi pengalaman. Ada yang bisa saya bantu lagi?';
-            }
-        }
-
-        // Inisialisasi: tampilkan home section
-        navigate('home');
-    </script>
-</body>
+            document.addEventListener("keydown", function(e) {
+                if (e.key === "Escape") {
+                    const searchModal = document.getElementById("searchModal");
+                    if (searchModal.classList.contains("active")) {
+                        closeSearch();
+                    }
+                }
+            });
+        </script>
+    </body>
 </html>
+
